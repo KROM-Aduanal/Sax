@@ -1,0 +1,26 @@
+{
+	"about": "Sax Framework 28102021. Beta",
+	"version": "2.0.0.0",
+	"saxsh": "%saxpath%\\masters\\vb\\esp\\sax2.0\\saxsh\\saxsh.exe -?",
+	"defaultsettings": "..\\..\\..\\..\\..\\..\\settings\\init\\saxsettings.json",
+	"workdirectory": "..\\..\\..\\..\\..\\projects\\",
+	"projects": [		
+		{
+			"_id": 7,
+			"saxidapp": 17,
+			"name": "Identity",
+			"info": "Identity Online",
+			"type": "Web",
+			"status": "on",
+			"activated": true,
+			"online": false,
+			"roladmin": "master",
+			"industry": "Broker Agents|import & exports",
+			"language": "es",
+			"directoryname": "services",
+			"prjsettings": "C:\\SAX\\projects\\services\\libs\bin\\settings\\identity.settings.json",
+			"modulessettings": "C:\\SAX\\projects\\services\\libs\bin\\settings\\identity.modules.json",
+			"modulesbinaries": "..\\modules"
+		}			
+	]
+}
