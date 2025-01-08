@@ -1,0 +1,321 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\login.aspx.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|solutionrelative:login.aspx.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|c:\\sax\\projects\\synapsis.hyb\\login\\dev\\main\\loginregister.aspx.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|solutionrelative:loginregister.aspx.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\loginregister.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|solutionrelative:loginregister.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\applicationuser.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|solutionrelative:applicationuser.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\applicationusermanager.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|solutionrelative:applicationusermanager.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\startup.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|solutionrelative:startup.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\asignarprivilegios.aspx.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|solutionrelative:asignarprivilegios.aspx.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|login||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\SAX\\masters\\vb\\esp\\cmf\\scr\\Core\\lnk\\gsol.krom\\1_0_stdEnlaceDatos64_dll\\EnlaceDatos64\\EnlaceDatos.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\applicationdbcontext.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|solutionrelative:applicationdbcontext.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\asignarprivilegios.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|solutionrelative:asignarprivilegios.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|solutionrelative:web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\applicationrolemanager.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|solutionrelative:applicationrolemanager.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\applicationrole.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{9625C131-0BE2-4431-B541-18521422CFC9}|login.vbproj|solutionrelative:applicationrole.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Login.aspx.vb",
+              "DocumentMoniker": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\Login.aspx.vb",
+              "RelativeDocumentMoniker": "Login.aspx.vb",
+              "ToolTip": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\Login.aspx.vb",
+              "RelativeToolTip": "Login.aspx.vb",
+              "ViewState": "AgIAACoAAAAAAAAAAAAowDAAAABBAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2024-12-03T15:56:08.784Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{2bb8137c-bac8-4d04-820a-c52b5d5b82da}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{757affbd-aba2-4a34-a9d0-98e3035e33ef}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{ca8cc5c7-0231-406a-95cd-aa5ed6ac0190}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:130:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{6324226f-61b6-4f28-92ee-18d4b5fe1e48}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{28836128-fc2c-11d2-a433-00c04f72d18a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{ecb7191a-597b-41f5-9843-03a4cf275dde}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{be4d7042-ba3f-11d2-840e-00c04f9902c1}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:131:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e506b91c-c606-466a-90a9-123d1d1e12b3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{e8b06f52-6d01-11d2-aa7d-00c04f990343}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "EnlaceDatos.vb",
+              "DocumentMoniker": "C:\\SAX\\masters\\vb\\esp\\cmf\\scr\\Core\\lnk\\gsol.krom\\1_0_stdEnlaceDatos64_dll\\EnlaceDatos64\\EnlaceDatos.vb",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\masters\\vb\\esp\\cmf\\scr\\Core\\lnk\\gsol.krom\\1_0_stdEnlaceDatos64_dll\\EnlaceDatos64\\EnlaceDatos.vb",
+              "ToolTip": "C:\\SAX\\masters\\vb\\esp\\cmf\\scr\\Core\\lnk\\gsol.krom\\1_0_stdEnlaceDatos64_dll\\EnlaceDatos64\\EnlaceDatos.vb",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\masters\\vb\\esp\\cmf\\scr\\Core\\lnk\\gsol.krom\\1_0_stdEnlaceDatos64_dll\\EnlaceDatos64\\EnlaceDatos.vb",
+              "ViewState": "AgIAAEcEAAAAAAAAAAAUwGgEAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2024-12-13T23:00:40.317Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "LoginRegister.aspx.vb",
+              "DocumentMoniker": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\LoginRegister.aspx.vb",
+              "RelativeDocumentMoniker": "LoginRegister.aspx.vb",
+              "ToolTip": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\LoginRegister.aspx.vb",
+              "RelativeToolTip": "LoginRegister.aspx.vb",
+              "ViewState": "AgIAAFgAAAAAAAAAAAAcwF0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2024-12-03T16:02:00.126Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "login",
+              "DocumentMoniker": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\login.vbproj",
+              "RelativeDocumentMoniker": "login.vbproj",
+              "ToolTip": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\login.vbproj",
+              "RelativeToolTip": "login.vbproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-12-05T22:15:15.222Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "LoginRegister.aspx",
+              "DocumentMoniker": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\LoginRegister.aspx",
+              "RelativeDocumentMoniker": "LoginRegister.aspx",
+              "ToolTip": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\LoginRegister.aspx",
+              "RelativeToolTip": "LoginRegister.aspx",
+              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
+              "WhenOpened": "2024-12-23T15:00:59.352Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ApplicationDbContext.vb",
+              "DocumentMoniker": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\ApplicationDbContext.vb",
+              "RelativeDocumentMoniker": "ApplicationDbContext.vb",
+              "ToolTip": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\ApplicationDbContext.vb",
+              "RelativeToolTip": "ApplicationDbContext.vb",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2024-12-04T16:31:11.326Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "AsignarPrivilegios.aspx.vb",
+              "DocumentMoniker": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\AsignarPrivilegios.aspx.vb",
+              "RelativeDocumentMoniker": "AsignarPrivilegios.aspx.vb",
+              "ToolTip": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\AsignarPrivilegios.aspx.vb",
+              "RelativeToolTip": "AsignarPrivilegios.aspx.vb",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACIAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2024-12-04T15:17:42.42Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "AsignarPrivilegios.aspx",
+              "DocumentMoniker": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\AsignarPrivilegios.aspx",
+              "RelativeDocumentMoniker": "AsignarPrivilegios.aspx",
+              "ToolTip": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\AsignarPrivilegios.aspx",
+              "RelativeToolTip": "AsignarPrivilegios.aspx",
+              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
+              "WhenOpened": "2024-12-16T15:45:48.298Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ApplicationRoleManager.vb",
+              "DocumentMoniker": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\ApplicationRoleManager.vb",
+              "RelativeDocumentMoniker": "ApplicationRoleManager.vb",
+              "ToolTip": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\ApplicationRoleManager.vb",
+              "RelativeToolTip": "ApplicationRoleManager.vb",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2024-12-04T16:42:09.74Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "ApplicationRole.vb",
+              "DocumentMoniker": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\ApplicationRole.vb",
+              "RelativeDocumentMoniker": "ApplicationRole.vb",
+              "ToolTip": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\ApplicationRole.vb",
+              "RelativeToolTip": "ApplicationRole.vb",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2024-12-04T16:35:38.118Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ApplicationUserManager.vb",
+              "DocumentMoniker": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\ApplicationUserManager.vb",
+              "RelativeDocumentMoniker": "ApplicationUserManager.vb",
+              "ToolTip": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\ApplicationUserManager.vb",
+              "RelativeToolTip": "ApplicationUserManager.vb",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2024-12-04T16:44:09.184Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ApplicationUser.vb",
+              "DocumentMoniker": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\ApplicationUser.vb",
+              "RelativeDocumentMoniker": "ApplicationUser.vb",
+              "ToolTip": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\ApplicationUser.vb",
+              "RelativeToolTip": "ApplicationUser.vb",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2024-12-04T16:31:15.489Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Web.config",
+              "DocumentMoniker": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\Web.config",
+              "RelativeDocumentMoniker": "Web.config",
+              "ToolTip": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\Web.config",
+              "RelativeToolTip": "Web.config",
+              "ViewState": "AgIAAHsAAAAAAAAAAAAAAA8AAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2024-12-13T19:40:45.433Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Startup.vb",
+              "DocumentMoniker": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\Startup.vb",
+              "RelativeDocumentMoniker": "Startup.vb",
+              "ToolTip": "C:\\SAX\\projects\\synapsis.hyb\\login\\dev\\main\\Startup.vb",
+              "RelativeToolTip": "Startup.vb",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAACYAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2024-12-03T23:12:13.737Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
