@@ -212,27 +212,18 @@ Namespace Syn.Nucleo
             XMLCOVE = 13
 
             'Otros
-
             Referencia = 14
-
             FacturaComercial = 15
-
             Clientes = 16
-
             ProveedoresOperativos = 17
-
             Revalidacion = 18
-
             Viajes = 19
-
             Productos = 20
-
             TarifaArancelaria = 21
-
             AcuseValor = 22
-
             ManifestacionValor = 23
             ProcesamientoElectronicoDocumento = 24
+            ControlConsolidado = 25
         End Enum
 
         'Para representaciones impresas/ formatos PDF

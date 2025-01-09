@@ -29,6 +29,7 @@ Public Class PillboxControl
         [Default] = 0
         Simple = 1
         Advanced = 2
+        Basic = 3
     End Enum
 
     Enum ToolbarActions
@@ -115,6 +116,16 @@ Public Class PillboxControl
                 buttons_(2).Visible = False
 
                 buttons_(3).Visible = True
+
+            ElseIf value = ToolbarModality.Basic Then
+
+                buttons_(0).Visible = True
+
+                buttons_(1).Visible = False
+
+                buttons_(2).Visible = False
+
+                buttons_(3).Visible = False
 
             End If
 
@@ -385,7 +396,6 @@ Public Class PillboxControl
 #End Region
 
 #Region "Metodos"
-
     Public Sub FiledPillbox()
 
         EnsureChildControls()
@@ -417,6 +427,48 @@ Public Class PillboxControl
                                                  'If aux.Count > 0 Then c.Item("archivado") = aux(0)
 
                                              End Sub)
+
+                _textJsondata.Text = New JavaScriptSerializer().Serialize(dataSource_)
+
+                _toolBar.SetPage = IIf(page_ >= 1, page_, 1)
+
+                PreparedDataPillbox()
+
+            End If
+
+        End If
+
+    End Sub
+
+    Public Sub FiledPillbox(listaArchivar_ As List(Of Int32))
+
+        EnsureChildControls()
+
+        Dim dataSource_ = New JavaScriptSerializer().Deserialize(Of List(Of Dictionary(Of String, Object)))(_textJsondata.Text)
+
+        Dim filteredDataSource_ = FilterVisibleData(dataSource_)
+
+        If filteredDataSource_ IsNot Nothing Then
+
+            If filteredDataSource_.Count > 0 Then
+
+                Dim page_ = _toolBar.GetPage - 1
+
+                OnBeforeClick()
+
+                For Each archivar_ In listaArchivar_
+
+                    dataSource_.ToList().ForEach(Sub(c As Dictionary(Of String, Object))
+
+                                                     If c.Item("identidad") = filteredDataSource_(archivar_ - 1).Item("identidad") Then
+
+                                                         c.Item("archivado") = True
+
+                                                     End If
+
+                                                 End Sub)
+
+                Next
 
                 _textJsondata.Text = New JavaScriptSerializer().Serialize(dataSource_)
 

@@ -13,6 +13,7 @@ Imports System.IO
 Imports System.Drawing
 Imports System.Drawing.Imaging
 Imports PdfiumViewer
+Imports Accord.Imaging.Filters
 
 Public Class Organismo
     Inherits System.Web.UI.Page
@@ -992,19 +993,21 @@ Public Class Organismo
 
             For page_ As Integer = 0 To pdfDocument_.PageCount - 1
 
-                Using image_ As Image = RenderPageToImage(pdfDocument_, page_, 450)
+                Using image_ As Image = RenderPageToImage(pdfDocument_, page_, 250)
 
                     Using bitmap As New Bitmap(image_)
 
-                        Using brightImage As Bitmap = AdjustBrightness(bitmap, 1.3)
+                        Dim adjustedBitmap As Bitmap = AdjustImageAccord(bitmap, 1.3, 1.1)
 
-                            Using newMemoryStream_ As New MemoryStream()
+                        Using newMemoryStream_ As New MemoryStream()
 
-                                brightImage.Save(newMemoryStream_, ImageFormat.Png)
+                            adjustedBitmap.Save(newMemoryStream_, ImageFormat.Png)
 
-                                listImage_.Add(newMemoryStream_.ToArray())
+                            listImage_.Add(newMemoryStream_.ToArray())
 
-                            End Using
+                            Dim filePath As String = $"C:\facturas\img\imagen_pagina_{page_ + 1}.png"
+
+                            adjustedBitmap.Save(filePath, ImageFormat.Png)
 
                         End Using
 
@@ -1022,34 +1025,25 @@ Public Class Organismo
 
     Private Function RenderPageToImage(pdfDocument As PdfDocument, pageIndex As Integer, dpi As Integer) As Image
 
-        Return pdfDocument.Render(pageIndex, dpi, dpi, PdfRenderFlags.Grayscale)
+        Return pdfDocument.Render(pageIndex, dpi, dpi, PdfRenderFlags.CorrectFromDpi)
 
     End Function
 
-    Private Function AdjustBrightness(original As Bitmap, brightness As Single) As Bitmap
+    Private Function AdjustImageAccord(originalImage As Bitmap, brightness As Single, contrast As Single) As Bitmap
+        ' Aplicar brillo
+        Dim brightnessFilter As New BrightnessCorrection(CInt((brightness - 1) * 255))
 
-        Dim adjustedImage As New Bitmap(original.Width, original.Height)
+        Dim adjustedImage As Bitmap = brightnessFilter.Apply(originalImage)
 
-        Using g As Graphics = Graphics.FromImage(adjustedImage)
+        ' Aplicar contraste
+        Dim contrastFilter As New ContrastCorrection(CInt((contrast - 1) * 100))
 
-            ' Create color matrix
-            Dim brightnessMatrix As Single()() = {
-                New Single() {brightness, 0, 0, 0, 0},
-                New Single() {0, brightness, 0, 0, 0},
-                New Single() {0, 0, brightness, 0, 0},
-                New Single() {0, 0, 0, 1, 0},
-                New Single() {0, 0, 0, 0, 1}
-            }
+        adjustedImage = contrastFilter.Apply(adjustedImage)
 
-            Dim colorMatrix As New Imaging.ColorMatrix(brightnessMatrix)
+        ' Convertir a escala de grises
+        Dim grayscaleFilter As New Grayscale(0.2126, 0.7152, 0.0722)
 
-            Dim imageAttributes As New Imaging.ImageAttributes()
-
-            imageAttributes.SetColorMatrix(colorMatrix)
-
-            g.DrawImage(original, New Rectangle(0, 0, original.Width, original.Height), 0, 0, original.Width, original.Height, GraphicsUnit.Pixel, imageAttributes)
-
-        End Using
+        adjustedImage = grayscaleFilter.Apply(adjustedImage)
 
         Return adjustedImage
 
@@ -1533,6 +1527,8 @@ Public NotInheritable Class NumeroLetras
             Return Resultado.ToString().Substring(1)
         End If
     End Function
+
+
 
 
     'No soporta Framework 4.5, habría que convertir todo.

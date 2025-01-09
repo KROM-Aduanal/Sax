@@ -4,6 +4,7 @@ Imports System.Web.UI.WebControls
 Imports System.ComponentModel
 Imports System.Web.UI
 Imports System.Web
+Imports Microsoft.SqlServer.Server
 
 <Assembly: TagPrefix("Gsol.Web.Components", "GWC")>
 <
@@ -20,6 +21,14 @@ Public Class ButtonControl
 #Region "Controls"
 
     Private _buttonControl As Button
+
+    Private _tooltipControlText As TextBox
+
+    Private _inputElement As Object
+
+    Private _validationsElements As HtmlGenericControl
+
+    Private _unlokedControl As HtmlGenericControl
 
 #End Region
 
@@ -138,11 +147,11 @@ Public Class ButtonControl
 
                 If ForeColor.IsEmpty = False Then
 
-                    Attributes.Add("style", "background-image:url(/FrontEnd/Librerias/Krom/imgs/" & Icon & "); --tintColor: " & ForeColor.ToHex)
+                    .Attributes.Add("style", "background-image:url(/FrontEnd/Librerias/Krom/imgs/" & Icon & "); --tintColor: " & ForeColor.ToHex)
 
                 Else
 
-                    Attributes.Add("style", "background-image:url(/FrontEnd/Librerias/Krom/imgs/" & Icon & ");")
+                    .Attributes.Add("style", "background-image:url(/FrontEnd/Librerias/Krom/imgs/" & Icon & "); background-color: #ffffff !important;")
 
                 End If
 
@@ -168,13 +177,29 @@ Public Class ButtonControl
 
         SettingButtonControls()
 
+        _tooltipControlText = New TextBox
+
+        With _tooltipControlText
+
+            .Attributes.Add("class", "__tooltip d-none")
+
+            .Attributes.Add("is", "wc-tooltip")
+
+        End With
+
         Dim component_ = New HtmlGenericControl("div")
 
         With component_
 
             .Attributes.Add("class", CssClass)
 
+            .Controls.Add(New LiteralControl("<div class='__component position-relative mb-3'>"))
+
             .Controls.Add(_buttonControl)
+
+            .Controls.Add(_tooltipControlText)
+
+            .Controls.Add(New LiteralControl("</div>"))
 
         End With
 
@@ -183,6 +208,8 @@ Public Class ButtonControl
     End Sub
 
     Protected Overrides Sub Render(ByVal component_ As HtmlTextWriter)
+
+        GetToolTipSetting(_tooltipControlText)
 
         Me.RenderContents(component_)
 

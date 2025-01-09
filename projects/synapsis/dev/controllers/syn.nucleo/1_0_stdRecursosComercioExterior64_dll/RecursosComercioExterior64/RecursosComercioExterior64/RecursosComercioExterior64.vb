@@ -233,6 +233,23 @@ Namespace Syn.Nucleo
 
         End Enum
 
+        Public Enum SeccionesControlConsolidados
+            <EnumMember> <Description("Sin definir")> SCC0 = 0
+
+
+            '#############################  SECCIONES ÚNICAS DEL CONTROL DE CONSOLIDADOS ##################################
+            <EnumMember> <Description("Aviso Consolidado")> SCC1 = 1
+            <EnumMember> <Description("Remesas")> SCC2 = 2
+            <EnumMember> <Description("Contenedores")> SCC3 = 3
+            <EnumMember> <Description("Items")> SCC4 = 4
+            <EnumMember> <Description("Proveedor")> SCC5 = 5
+            <EnumMember> <Description("Destinatario")> SCC6 = 6
+            '#############################  SECCIONES ÚNICAS DEL CONTROL DE CONSOLIDADOS ##################################
+
+
+
+        End Enum
+
         Public Enum CamposPedimento
             'Región del 1 - 999
 
@@ -1077,6 +1094,32 @@ Namespace Syn.Nucleo
             <EnumMember> <Description("Factura o documento comercial")> CA_FAC_DOC_COMERCIAL_65 = 11022
             <EnumMember> <Description("Importe y moneda")> CA_IMPORTE_MONEDA_65 = 11023
             <EnumMember> <Description("Concepto del cargo")> CA_CONCEPTO_CARGO_65 = 11024
+        End Enum
+        Public Enum CamposControlConsolidados
+            'Región del 11100 - 11200
+            <EnumMember> <Description("Sin definir")> SIN_DEFINIR = 11100
+
+            <EnumMember> <Description("Periodicidad")> CP_PERIODICIDAD = 11101
+            <EnumMember> <Description("Fecha de apertura")> CP_FECHA_APERTURA = 11102
+            <EnumMember> <Description("Fecha de cierre estimado")> CP_FECHA_CIERRE_ESTIMADO = 11103
+            <EnumMember> <Description("Estatus control consolidados")> CP_ESTATUS = 11104
+            <EnumMember> <Description("Número de remesa")> CP_NUMERO_REMESA = 11105
+            <EnumMember> <Description("Acuse de valor")> CP_ACUSE_VALOR = 11106
+            <EnumMember> <Description("Valor de la mercancia")> CP_VALOR_MERCANCIA = 11107
+            <EnumMember> <Description("Fecha del despacho")> CP_FECHA_DESPACHO = 11108
+            <EnumMember> <Description("Color al desaduanar")> CP_COLOR_DESADUANAMIENTO = 11109
+            <EnumMember> <Description("Número económico del vehículo")> CP_NUMERO_ECONOMICO_VEHICULO = 11110
+            <EnumMember> <Description("Peso bruto")> CP_PESO_BRUTO = 11111
+            <EnumMember> <Description("Número de bultos")> CP_NUMERO_BULTOS = 11112
+            <EnumMember> <Description("Marca")> CP_MARCA = 11113
+            <EnumMember> <Description("Observaciones remesa")> CP_OBSERVACIONES = 11114
+            <EnumMember> <Description("Número del contenedor o identificador")> CP_CONTENEDOR = 11115
+            <EnumMember> <Description("Tipo de contenedor")> CP_TIPO_CONTENEDOR = 11116
+            <EnumMember> <Description("Identificador del candado")> CP_CANDADO = 11117
+            <EnumMember> <Description("Color del candado")> CP_COLOR_CANDADO = 11118
+            <EnumMember> <Description("Fecha de creacion remesa")> CP_CREACION = 11119
+            <EnumMember> <Description("Tipo de cambio")> CP_TIPO_CAMBIO = 11120
+            <EnumMember> <Description("Placas")> CP_PLACAS = 11121
         End Enum
 
         Public Enum CamposProcesamientoElectDocumentos

@@ -4,6 +4,10 @@ Imports Syn.Documento
 Imports Syn.Documento.Componentes
 Imports Syn.Nucleo.RecursosComercioExterior.SeccionesPedimento
 Imports Syn.Nucleo.RecursosComercioExterior.CamposPedimento
+Imports Syn.Nucleo.RecursosComercioExterior.CamposControlConsolidados
+Imports Syn.Nucleo.RecursosComercioExterior.CamposAcuseValor
+Imports Syn.Nucleo.RecursosComercioExterior.SeccionesControlConsolidados
+Imports Syn.Nucleo.Recursos.CamposClientes
 Imports Syn.Nucleo.RecursosComercioExterior
 Imports iText.Layout
 Imports iText.Layout.Element
@@ -14,6 +18,7 @@ Imports iText.IO
 Imports iText.IO.Image
 Imports iText.Kernel.Events
 Imports Rpt.Global
+Imports System.Text.RegularExpressions
 
 Public Class RepresentacionPedimento
     Implements IRepresentacionPedimento
@@ -410,7 +415,736 @@ Public Class RepresentacionPedimento
 
     End Function
 
-    Public Function ImprimirFormatoPartesII(Optional ByVal documento_ As DocumentoElectronico = Nothing) As String _
+    Public Function ImprimirFormatoRemesa(numeroRemesa_ As Int32, Optional ByVal documento_ As DocumentoElectronico = Nothing) As String _
+        Implements IRepresentacionPedimento.ImprimirFormatoRemesa
+
+        Dim tipo_ As IRepresentacionPedimento.TipoOperacion = IRepresentacionPedimento.TipoOperacion.Importacion
+
+        Dim remesa_ = _documento.Seccion(SeccionesControlConsolidados.SCC2).Nodos(numeroRemesa_)
+
+        _itextHandler.Document.SetMargins(50, 80, 50, 80)
+
+        _nivel1 = New Table({1000.0F})
+
+        _nivel2 = New Table({700.0F, 300.0F})
+
+#Region "Encabezado"
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("REMESA DE CONSOLIDADO").SetTextAlignment(TextAlignment.CENTER).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 10.0F).
+                SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 10.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("Pag. 1 de 1").SetTextAlignment(TextAlignment.CENTER).
+                SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 10.0F, 0F).SetPaddings(0F, 0F, 10.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel1.AddCell(New Cell().Add(_nivel2).SetMargins(0F, 0.0F, 10.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2 = New Table({500.0F, 500.0F})
+
+        _nivel3 = New Table({300.0F, 700.0F})
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("NO. PEDIMENTO:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0.0F).
+                SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph(CStr(IIf(_documento.Attribute(CA_NUMERO_PEDIMENTO_COMPLETO).Valor IsNot Nothing, _documento.Attribute(CA_NUMERO_PEDIMENTO_COMPLETO).
+                Valor, " "))).SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).
+                SetWordSpacing(0F)).SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(_nivel3).SetMargins(0F, 0.0F, 0.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3 = New Table({300.0F, 200.0F, 300.0F, 200.0F})
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("CVE. PEDIMENTO:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0.0F).
+                SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph(CStr(IIf(_documento.Attribute(CA_CVE_PEDIMENTO).Valor IsNot Nothing, _documento.Attribute(CA_CVE_PEDIMENTO).Valor, " "))).
+                SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("NO. REMESA:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0.0F).
+                SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph(CStr(IIf(remesa_.Attribute(CP_NUMERO_REMESA).Valor IsNot Nothing, remesa_.Attribute(CP_NUMERO_REMESA).Valor, " "))).
+                SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(_nivel3).SetMargins(0F, 0.0F, 0.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3 = New Table({250.0F, 750.0F})
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("NO. ACUSE VALOR:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0.0F).
+                SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph(CStr(IIf(remesa_.Attribute(CA_NUMERO_ACUSEVALOR).Valor IsNot Nothing, remesa_.Attribute(CA_NUMERO_ACUSEVALOR).Valor, " "))).
+                SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(_nivel3).SetMargins(0F, 0.0F, 30.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3 = New Table({300.0F, 700.0F})
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("FECHA ACUSE VALOR:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0.0F).
+                SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("   ").SetTextAlignment(TextAlignment.LEFT).
+                SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(_nivel3).SetMargins(0F, 0.0F, 0.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("DATOS DEL IMPORTADOR/EXPORTADOR").SetTextAlignment(TextAlignment.CENTER).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0.0F).
+                SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("DATOS DEL PROVEEDOR/COMPRADOR").SetTextAlignment(TextAlignment.CENTER).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0.0F).
+                SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3 = New Table({100.0F, 900.0F})
+        'IMPORTADOR/EXPORTADOR
+        _nivel3.AddCell(New Cell().Add(New Paragraph("NOMBRE:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0.0F).
+                SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph(CStr(IIf(_documento.Attribute(CA_RAZON_SOCIAL).Valor IsNot Nothing, _documento.Attribute(CA_RAZON_SOCIAL).Valor, " "))).
+                SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(_nivel3).SetMargins(0F, 0.0F, 30.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3 = New Table({100.0F, 900.0F})
+        'PROVEEDOR/COMPRADOR
+        _nivel3.AddCell(New Cell().Add(New Paragraph("NOMBRE:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).
+                SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph(CStr(IIf(remesa_.Attribute(CamposProveedorOperativo.CA_RAZON_SOCIAL_PROVEEDOR).Valor IsNot Nothing, remesa_.
+                Attribute(CamposProveedorOperativo.CA_RAZON_SOCIAL_PROVEEDOR).Valor, " "))).SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).
+                SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(_nivel3).SetMargins(0F, 0.0F, 30.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3 = New Table({100.0F, 900.0F})
+        'IMPORTADOR/EXPORTADOR
+        _nivel3.AddCell(New Cell().Add(New Paragraph("DOMICILIO:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0.0F).
+                SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 20.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph(" FALTA ").SetTextAlignment(TextAlignment.LEFT).
+                SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 20.0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 20.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(_nivel3).SetMargins(0F, 0.0F, 40.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3 = New Table({100.0F, 900.0F})
+        'PROVEEDOR/COMPRADOR
+        _nivel3.AddCell(New Cell().Add(New Paragraph("DOMICILIO:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0.0F).
+                SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 20.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph(CStr(IIf(remesa_.Attribute(CamposDomicilio.CA_DOMICILIO_FISCAL).Valor IsNot Nothing, remesa_.Attribute(CamposDomicilio.CA_DOMICILIO_FISCAL).Valor, " "))).
+                SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 20.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(_nivel3).SetMargins(0F, 0.0F, 40.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3 = New Table({200.0F, 800.0F})
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("RFC:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0.0F).
+                SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph(CStr(IIf(_documento.Attribute(CA_RFC_CLIENTE).Valor IsNot Nothing, _documento.Attribute(CA_RFC_CLIENTE).Valor, " "))).SetTextAlignment(TextAlignment.LEFT).
+                SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell(rowspan:=3, colspan:=0).Add(_nivel3).SetMargins(0F, 0.0F, 30.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3 = New Table({1000.0F})
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("DATOS DEL DESTINATARIO:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0.0F).
+                SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(_nivel3).SetMargins(0F, 0.0F, 10.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3 = New Table({100.0F, 900.0F})
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("NOMBRE:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0.0F).
+                SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph(CStr(IIf(remesa_.Attribute(CamposDestinatario.CA_RAZON_SOCIAL).Valor IsNot Nothing, remesa_.Attribute(CamposDestinatario.CA_RAZON_SOCIAL).Valor, " "))).
+                SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 10.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("DOMICILIO:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0.0F).
+                SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph(CStr(IIf(remesa_.Attribute(CamposDomicilio.CA_DOMICILIO_FISCAL).Valor IsNot Nothing, remesa_.Attribute(CamposDomicilio.CA_DOMICILIO_FISCAL).Valor, " "))).
+                SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(_nivel3).SetMargins(0F, 0.0F, 30.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3 = New Table({400.0F, 100.0F, 400.0F, 100.0F})
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("Aduana despacho:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0.0F).
+                SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph(CStr(IIf(_documento.Attribute(CA_ADUANA_ENTRADA_SALIDA).Valor IsNot Nothing, _documento.Attribute(CA_ADUANA_ENTRADA_SALIDA).Valor, " "))).
+                SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("Aduana salida:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0.0F).
+                SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph(CStr(IIf(_documento.Attribute(CA_ADUANA_ENTRADA_SALIDA).Valor IsNot Nothing, _documento.Attribute(CA_ADUANA_ENTRADA_SALIDA).Valor, " "))).
+                SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(_nivel3).SetMargins(0F, 0.0F, 30.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel1.AddCell(New Cell().Add(_nivel2).SetMargins(0F, 0.0F, 20.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+#End Region
+
+#Region "Codigo de barras"
+        '--------------------- CODIGO BARRAS ---------------------
+
+        _nivel2 = New Table({400.0F, 450.0F, 150.0F})
+
+        _image = New Image(ImageDataFactory.Create("C:/temp/CBA_RKU2100551.png"))
+
+        _image.SetWidth(280)
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("ACUSE DE RECIBO:").SetTextAlignment(TextAlignment.LEFT).
+                SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 10.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("CODIGO DE BARRAS:").SetTextAlignment(TextAlignment.CENTER).
+                SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph(" ").SetTextAlignment(TextAlignment.CENTER).
+                SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph(" FALTA ").SetTextAlignment(TextAlignment.CENTER).
+                SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Div().Add(New Paragraph("").SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetVerticalAlignment(VerticalAlignment.TOP).
+                SetHorizontalAlignment(HorizontalAlignment.CENTER).SetMultipliedLeading(1)).Add(_image).SetVerticalAlignment(VerticalAlignment.TOP)).
+                SetBorder(NO_BORDER).SetVerticalAlignment(VerticalAlignment.TOP).SetHorizontalAlignment(HorizontalAlignment.CENTER))
+
+        _nivel3 = New Table({1000.0F})
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph(CStr(IIf(_documento.Attribute(CA_PATENTE).Valor IsNot Nothing, _documento.Attribute(CA_PATENTE).Valor, " "))).SetTextAlignment(TextAlignment.LEFT).
+                SetFont(_itextHandler.Arial).SetFontSize(4.0F).SetMargins(0F, 0F, 3.0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 50.0F, 0F).SetPaddings(0F, 0F, 0.2F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("DN023240").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(4.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("000000000000").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(4.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("SB46VMLJ").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(4.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("00000002625.000").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(4.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("000000152431.00").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(4.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("00000000000").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(4.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("000000000000").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(4.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("20000").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(4.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("000000000.000").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(4.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(_nivel3).SetMargins(0F, 0.0F, 30.0F, 0.0F).SetPaddings(0F, 0F, 10.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel1.AddCell(New Cell().Add(_nivel2).SetMargins(0F, 0.0F, 10.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 1.0)))
+
+        '--------------------- TRANSPORTISTA ---------------------
+
+        _nivel2 = New Table({400.0F, 600.0F})
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("NOMBRE DEL TRANSPORTISTA:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).
+                SetMargins(0F, 0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph(" ").SetTextAlignment(TextAlignment.LEFT).
+                SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("NUMERO ECONOMICO(CONTENEDOR/PLATAFORMA):").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).
+                SetMargins(0F, 0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph(CStr(IIf(remesa_.Attribute(CP_NUMERO_ECONOMICO_VEHICULO).Valor IsNot Nothing, remesa_.Attribute(CP_NUMERO_ECONOMICO_VEHICULO).
+                Valor, " "))).SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).
+                SetWordSpacing(0F)).SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel1.AddCell(New Cell().Add(_nivel2).SetMargins(0F, 0.0F, 0.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2 = New Table({200.0F, 600.0F})
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("PLACAS:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).
+                SetMargins(0F, 0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph(CStr(IIf(remesa_.Attribute(CP_PLACAS).Valor IsNot Nothing, remesa_.Attribute(CP_PLACAS).Valor, " "))).SetTextAlignment(TextAlignment.LEFT).
+                SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel1.AddCell(New Cell().Add(_nivel2).SetMargins(0F, 0.0F, 0.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2 = New Table({200.0F, 400.0F, 200.0F, 200.0F})
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("CANDADOS:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).
+                SetMargins(0F, 0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("   ").SetTextAlignment(TextAlignment.LEFT).
+                SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        'CStr(IIf(_documento.Attribute(CP_MODALIDAD_ADUANA_PATENTE).Valor IsNot Nothing, _documento.Attribute(CP_MODALIDAD_ADUANA_PATENTE).Valor, " "))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("PESO BRUTO:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).
+                SetMargins(0F, 0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph(CStr(IIf(remesa_.Attribute(CP_PESO_BRUTO).Valor IsNot Nothing, remesa_.Attribute(CP_PESO_BRUTO).Valor, " "))).
+                SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("MARCA:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).
+                SetMargins(0F, 0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph(CStr(IIf(remesa_.Attribute(CP_MARCA).Valor IsNot Nothing, remesa_.Attribute(CP_MARCA).Valor, " "))).
+                SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("BULTOS:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).
+                SetMargins(0F, 0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph(CStr(IIf(remesa_.Attribute(CP_NUMERO_BULTOS).Valor IsNot Nothing, remesa_.Attribute(CP_NUMERO_BULTOS).Valor, " "))).
+                SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("GUIA MASTER:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).
+                SetMargins(0F, 0F, 10.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("  ").SetTextAlignment(TextAlignment.LEFT).
+                SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 10.0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("GUIA HOUSE:").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).
+                SetMargins(0F, 0F, 10.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("  ").SetTextAlignment(TextAlignment.LEFT).
+                SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 10.0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel1.AddCell(New Cell().Add(_nivel2).SetMargins(0F, 0.0F, 20.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+#End Region
+
+#Region "Detalles"
+
+        _nivel2 = New Table({50.0F, 300.0F, 100.0F, 150.0F, 50.0F, 150.0F, 200.0F})
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("NO. ORDEN").SetTextAlignment(TextAlignment.CENTER).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).
+                SetMargins(0F, 0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetMargins(0F, 0F, 0F, 0F).
+                SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("DESCRIPCION").SetTextAlignment(TextAlignment.CENTER).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).
+                SetMargins(0F, 0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetMargins(0F, 0F, 0F, 0F).
+                SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("PESO").SetTextAlignment(TextAlignment.CENTER).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).
+                SetMargins(0F, 0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetMargins(0F, 0F, 0F, 0F).
+                SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("CANTIDAD").SetTextAlignment(TextAlignment.CENTER).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).
+                SetMargins(0F, 0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetMargins(0F, 0F, 0F, 0F).
+                SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("UMC").SetTextAlignment(TextAlignment.CENTER).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).
+                SetMargins(0F, 0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetMargins(0F, 0F, 0F, 0F).
+                SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("PRECIO UNIT. (DLS)").SetTextAlignment(TextAlignment.CENTER).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).
+                SetMargins(0F, 0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetMargins(0F, 0F, 0F, 0F).
+                SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("VALOR DLS").SetTextAlignment(TextAlignment.CENTER).SetFont(_itextHandler.ArialBold).SetFontSize(8.0F).
+                SetMargins(0F, 0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetMargins(0F, 0F, 0F, 0F).
+                SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+        '===============================================================================================================================================================
+        Dim peso_ = 0.0
+        Dim cantidad_ = 0.0
+        Dim valorEnDolar_ = 0.0
+
+        For Each item_ In remesa_.Seccion(SCC4).Nodos
+
+            _nivel2.AddCell(New Cell().Add(New Paragraph(CStr(IIf(item_.Attribute(CamposGlobales.CP_IDENTITY).Valor IsNot Nothing, item_.Attribute(CamposGlobales.CP_IDENTITY).Valor, " "))).
+                    SetTextAlignment(TextAlignment.CENTER).SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                    SetVerticalAlignment(VerticalAlignment.MIDDLE).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+            _nivel2.AddCell(New Cell().Add(New Paragraph(CStr(IIf(item_.Attribute(CamposAcuseValor.CA_DESCRIPCION_PARTIDA_ACUSEVALOR).Valor IsNot Nothing, item_.Attribute(CamposAcuseValor.
+                    CA_DESCRIPCION_PARTIDA_ACUSEVALOR).Valor, " "))).SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 5.0F, 0F, 5.0F).
+                    SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetMargins(0F, 0F, 0F, 0F).
+                    SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+            _nivel2.AddCell(New Cell().Add(New Paragraph("0.00").SetTextAlignment(TextAlignment.RIGHT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).
+                    SetMargins(0F, 5.0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetMargins(0F, 15.0F, 5.0F, 0F).
+                    SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+            _nivel2.AddCell(New Cell().Add(New Paragraph(CStr(IIf(item_.Attribute(CamposFacturaComercial.CA_CANTIDAD_COMERCIAL_PARTIDA).Valor IsNot Nothing, item_.Attribute(CamposFacturaComercial.
+                    CA_CANTIDAD_COMERCIAL_PARTIDA).Valor, " "))).SetTextAlignment(TextAlignment.RIGHT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 5.0F, 0F, 0.0F).
+                    SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetMargins(0F, 15.0F, 5.0F, 0F).
+                    SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+            _nivel2.AddCell(New Cell().Add(New Paragraph(CStr(IIf(item_.Attribute(CamposAcuseValor.CA_UNIDAD_MEDIDA_FACTURA_PARTIDA_ACUSEVALOR).ValorPresentacion IsNot Nothing, item_.
+                    Attribute(CamposAcuseValor.CA_UNIDAD_MEDIDA_FACTURA_PARTIDA_ACUSEVALOR).ValorPresentacion, " "))).SetTextAlignment(TextAlignment.CENTER).SetFont(_itextHandler.Arial).SetFontSize(8.0F).
+                    SetMargins(0F, 0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetMargins(0F, 0F, 0F, 0F).
+                    SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+            _nivel2.AddCell(New Cell().Add(New Paragraph(CStr(IIf(item_.Attribute(CamposFacturaComercial.CA_PRECIO_UNITARIO_PARTIDA).Valor IsNot Nothing, item_.Attribute(CamposFacturaComercial.
+                    CA_PRECIO_UNITARIO_PARTIDA).Valor, " "))).SetTextAlignment(TextAlignment.RIGHT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 5.0F, 0F, 0.0F).
+                    SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetMargins(0F, 15.0F, 5.0F, 0F).
+                    SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+            _nivel2.AddCell(New Cell().Add(New Paragraph(CStr(IIf(item_.Attribute(CamposAcuseValor.CA_VALOR_MERCANCIA_PARTIDA_DOLARES_ACUSEVALOR).Valor IsNot Nothing, item_.Attribute(CamposAcuseValor.
+                    CA_VALOR_MERCANCIA_PARTIDA_DOLARES_ACUSEVALOR).Valor, " "))).SetTextAlignment(TextAlignment.RIGHT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 5.0F, 0F, 0.0F).
+                    SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetMargins(0F, 15.0F, 5.0F, 0F).
+                    SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+            cantidad_ += IIf(item_.Attribute(CamposFacturaComercial.CA_CANTIDAD_COMERCIAL_PARTIDA).Valor IsNot Nothing, item_.Attribute(CamposFacturaComercial.CA_CANTIDAD_COMERCIAL_PARTIDA).Valor, 0.0)
+
+            valorEnDolar_ += IIf(item_.Attribute(CamposAcuseValor.CA_VALOR_MERCANCIA_PARTIDA_DOLARES_ACUSEVALOR).Valor IsNot Nothing,
+                                 item_.Attribute(CamposAcuseValor.CA_VALOR_MERCANCIA_PARTIDA_DOLARES_ACUSEVALOR).Valor, 0.0)
+
+        Next
+
+        '===============================================================================================================================================================
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph(" ").SetTextAlignment(TextAlignment.CENTER).SetFont(_itextHandler.Arial).SetFontSize(8.0F).
+                SetMargins(0F, 0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetMargins(0F, 0F, 0F, 0F).
+                SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph(" ").SetTextAlignment(TextAlignment.CENTER).SetFont(_itextHandler.Arial).SetFontSize(8.0F).
+                SetMargins(0F, 0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetMargins(0F, 0F, 0F, 0F).
+                SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("0.00").SetTextAlignment(TextAlignment.RIGHT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).
+                SetMargins(0F, 5.0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetMargins(0F, 15.0F, 5.0F, 0F).
+                SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph(cantidad_.ToString).SetTextAlignment(TextAlignment.RIGHT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).
+                SetMargins(0F, 5.0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetMargins(0F, 15.0F, 5.0F, 0F).
+                SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph(" ").SetTextAlignment(TextAlignment.CENTER).SetFont(_itextHandler.Arial).SetFontSize(8.0F).
+                SetMargins(0F, 0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetMargins(0F, 0F, 0F, 0F).
+                SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph(" ").SetTextAlignment(TextAlignment.RIGHT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).
+                SetMargins(0F, 0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetMargins(0F, 0F, 5.0F, 0F).
+                SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph(valorEnDolar_.ToString).SetTextAlignment(TextAlignment.RIGHT).SetFont(_itextHandler.Arial).SetFontSize(8.0F).
+                SetMargins(0F, 5.0F, 0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetVerticalAlignment(HorizontalAlignment.CENTER).SetMargins(0F, 15.0F, 0F, 0F).
+                SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+        _nivel1.AddCell(New Cell().Add(_nivel2).SetMargins(0F, 0.0F, 0.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel1.AddCell(New Cell().Add(New Paragraph("OBSERVACIONES:").SetTextAlignment(TextAlignment.LEFT).
+                SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 10.0F, 5.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        '===============================================================================================================================================================
+
+        _nivel2 = New Table({1000.0F})
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph(CStr(IIf(remesa_.Attribute(CP_OBSERVACIONES).Valor IsNot Nothing, remesa_.Attribute(CP_OBSERVACIONES).Valor, " "))).
+                SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(5.0F, 0F, 0.0F, 5.0F).
+                SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel1.AddCell(New Cell().Add(_nivel2).SetMargins(0F, 0.0F, 40.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+#End Region
+
+#Region "Pie pagina"
+
+        _nivel1.AddCell(New Cell().Add(New Paragraph("  ").SetTextAlignment(TextAlignment.LEFT).
+                SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 25.0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 10.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2 = New Table({800.0F, 200.0F})
+
+        _nivel3 = New Table({1000.0F})
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("AGENTE ADUANAL, APODERADO ADUANAL O ALM").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(6.0F).SetMargins(5.0F, 0F, 0F, 5.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _tablaLayout = New Table({200.0F, 400.0F, 150.0F, 250.0F})
+
+        _tablaLayout.AddCell(New Cell().Add(New Paragraph("NOMBRE O RAZ. SOC").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(6.0F).SetMargins(5.0F, 0F, 0F, 5.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _tablaLayout.AddCell(New Cell().Add(New Paragraph("JESUS ENRIQUE GOMEZ REYES").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(6.0F).SetMargins(5.0F, 0F, 0F, 5.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _tablaLayout.AddCell(New Cell().Add(New Paragraph("PATENTE").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(6.0F).SetMargins(5.0F, 0F, 0F, 5.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _tablaLayout.AddCell(New Cell().Add(New Paragraph("3945").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(6.0F).SetMargins(5.0F, 0F, 0F, 5.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _tablaLayout.AddCell(New Cell().Add(New Paragraph("R.F.C.").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(6.0F).SetMargins(5.0F, 0F, 5.0F, 5.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _tablaLayout.AddCell(New Cell().Add(New Paragraph("GORJ800903BA").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(6.0F).SetMargins(5.0F, 0F, 5.0F, 5.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _tablaLayout.AddCell(New Cell().Add(New Paragraph("CURP").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(6.0F).SetMargins(5.0F, 0F, 5.0F, 5.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _tablaLayout.AddCell(New Cell().Add(New Paragraph("GORJ800903HVZMYS03").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(6.0F).SetMargins(5.0F, 0F, 5.0F, 5.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(_tablaLayout).SetMargins(0F, 0.0F, 40.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(_nivel3).SetMargins(0F, 0.0F, 0.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+        _nivel2.AddCell(New Cell(rowspan:=2, colspan:=0).Add(New Paragraph("firma").SetTextAlignment(TextAlignment.CENTER).SetFont(_itextHandler.Arial).SetFontSize(8.0F).
+                SetMargins(0F, 5.0F, 10.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetVerticalAlignment(VerticalAlignment.BOTTOM).SetMargins(0F, 15.0F, 0F, 0F).
+                SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)).SetBorderBottom(NO_BORDER))
+
+        _nivel3 = New Table({400.0F, 600.0F})
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("NUMERO DE SERIE DEL CERTIFICADO").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(6.0F).SetMargins(5.0F, 0F, 5.0F, 5.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetVerticalAlignment(HorizontalAlignment.CENTER).SetMargins(5.0F, 0F, 5.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("000000000000000000000000000").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(6.0F).SetMargins(0.0F, 0F, 0F, 5.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetVerticalAlignment(HorizontalAlignment.CENTER).SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(_nivel3).SetMargins(0F, 0.0F, 0.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)).SetBorderBottom(NO_BORDER))
+
+        _nivel1.AddFooterCell(New Cell().Add(_nivel2).SetMargins(0F, 0.0F, 0.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2 = New Table({1000.0F})
+
+        _nivel3 = New Table({800.0F, 200.0F})
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("FIRMA ELECTRONICA AVANZADA:").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(6.0F).SetMargins(5.0F, 0F, 0F, 5.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetVerticalAlignment(HorizontalAlignment.CENTER).SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(6.0F).SetMargins(5.0F, 0F, 0F, 5.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetVerticalAlignment(HorizontalAlignment.CENTER).SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel3.AddCell(New Cell().Add(New Paragraph("DDH2oR2jYx6CbXOg4vSVyWTWWQUkW6wfTgTGU1U4WAd8UscWkcz7ky6qbyl65BFdgWDUoi+whNAT1ICU0eVMuagFmlxjA3ZgTHI1Xt17FoBUqpA5qqq534SYDxvMF8XDmlDLmvffUo+YksKQnStzhj44rNfoF53rE8gOGuuEak9rk3WC/
+                6fmh1ukFjEoUQ2EEAf2Or+6I5kreKMJo9JkrFRXFWMQqKa8JQAAycM+qgs0quFAjg2YbhAs5o6bQNvEREToy6dvxd40KVMAE+jDNc0t5Wl9gFXDkAiX266u4/CCsgQWGWwGWlA4jRxuhl653PZaqn0RS86+cEBXuuhs2Q==").SetTextAlignment(TextAlignment.LEFT).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(4.0F).SetMargins(5.0F, 0F, 5.0F, 5.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetVerticalAlignment(HorizontalAlignment.CENTER).SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddFooterCell(New Cell().Add(_nivel3).SetMargins(0F, 0.0F, 10.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+        _nivel1.AddFooterCell(New Cell().Add(_nivel2).SetMargins(0F, 0.0F, 10.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2 = New Table({500.0F, 500.0F})
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("PRIMERA COPIA. TRANSPORTISTA").SetTextAlignment(TextAlignment.CENTER).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(6.0F).SetMargins(25.0F, 0F, 0F, 5.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetVerticalAlignment(HorizontalAlignment.CENTER).SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("DESTINO/ORIGEN. INTERIOR DEL PAIS").SetTextAlignment(TextAlignment.CENTER).SetMultipliedLeading(1).
+                SetFont(_itextHandler.Arial).SetFontSize(6.0F).SetMargins(25.0F, 0F, 0F, 5.0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                SetVerticalAlignment(HorizontalAlignment.CENTER).SetMargins(0F, 0F, 0.0F, 0F).SetPaddings(0F, 0F, 0.0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel1.AddFooterCell(New Cell().Add(_nivel2).SetMargins(0F, 0.0F, 10.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+#End Region
+
+        _itextHandler.Document.Add(_nivel1)
+
+        _itextHandler.Document.Close()
+
+        Dim inputAsString = _itextHandler.ConvertToString()
+
+        Return inputAsString
+
+
+    End Function
+
+    Public Function ImprimirFormatoCopiaSimple(numeroRemesa_ As Int32, Optional ByVal documento_ As DocumentoElectronico = Nothing) As String _
+        Implements IRepresentacionPedimento.ImprimirFormatoCopiaSimple
+
+        Dim tipo_ As IRepresentacionPedimento.TipoOperacion = IRepresentacionPedimento.TipoOperacion.Importacion
+
+        _itextHandler.Document.SetMargins(50, 80, 50, 80)
+
+        _nivel1 = New Table({1000.0F})
+
+        _nivel2 = New Table({600.0F, 150.0F, 250.0F})
+
+        '--------------------- ENCABEZADO ---------------------
+
+        If tipo_ = IRepresentacionPedimento.TipoOperacion.Importacion Then
+
+            _nivel1.AddHeaderCell(New Cell().Add(New Paragraph("M1.2.").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(9.0F).SetMargins(0F, 0F, 0F, 10.0F).
+                    SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 10.0F, 0F).SetBorder(NO_BORDER))
+
+            _nivel1.AddCell(New Cell().Add(New Paragraph("Pedimento de importación. Parte II. Embarque parcial de mercancías.").SetTextAlignment(TextAlignment.CENTER).
+                    SetFont(_itextHandler.ArialBold).SetFontSize(9.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                    SetMargins(0F, 0F, 10.0F, 0F).SetPaddings(0F, 0F, 10.0F, 0F).SetBorder(NO_BORDER))
+        Else
+
+            _nivel1.AddHeaderCell(New Cell().Add(New Paragraph("M1.3.").SetTextAlignment(TextAlignment.LEFT).SetFont(_itextHandler.ArialBold).SetFontSize(9.0F).SetMargins(0F, 0F, 0F, 10.0F).
+                    SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 10.0F, 0F).SetBorder(NO_BORDER))
+
+            _nivel1.AddCell(New Cell().Add(New Paragraph("Pedimento de exportación. Parte II. Embarque parcial de mercancías.").SetTextAlignment(TextAlignment.CENTER).
+                    SetFont(_itextHandler.ArialBold).SetFontSize(9.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                    SetMargins(0F, 0F, 10.0F, 0F).SetPaddings(0F, 0F, 10.0F, 0F).SetBorder(NO_BORDER))
+
+        End If
+
+        '--------------------- CODIGO BARRAS ---------------------
+
+        _image = New Image(ImageDataFactory.Create("C:/temp/CBA_RKU2100551.png"))
+
+        _image.SetWidth(100)
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("").SetTextAlignment(TextAlignment.CENTER).
+                    SetFont(_itextHandler.ArialBold).SetFontSize(9.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                    SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Div().Add(New Paragraph("").SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetMultipliedLeading(1).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetHorizontalAlignment(HorizontalAlignment.CENTER)).
+                            Add(_image).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetHorizontalAlignment(HorizontalAlignment.CENTER)).SetBorder(NO_BORDER).
+                            SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)).SetVerticalAlignment(VerticalAlignment.MIDDLE).SetHorizontalAlignment(HorizontalAlignment.CENTER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("").SetTextAlignment(TextAlignment.CENTER).
+                    SetFont(_itextHandler.ArialBold).SetFontSize(9.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                    SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel1.AddCell(New Cell().Add(_nivel2).SetMargins(0F, 0.0F, 10.0F, 0.0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        '--------------------- INFO PEDIMENTO ---------------------
+
+        _nivel1.AddCell(New Cell().Add(New Paragraph("Número de pedimento ________________").SetTextAlignment(TextAlignment.CENTER).
+                    SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel1.AddCell(New Cell().Add(New Paragraph("Datos del vehículo ___________________").SetTextAlignment(TextAlignment.CENTER).
+                    SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel1.AddCell(New Cell().Add(New Paragraph("Candados _________________________").SetTextAlignment(TextAlignment.CENTER).
+                    SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel1.AddCell(New Cell().Add(New Paragraph("Contenedor(es) _____________________").SetTextAlignment(TextAlignment.CENTER).
+                    SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetWordSpacing(0F)).SetMargins(0F, 0F, 10.0F, 0F).SetPaddings(0F, 0F, 10.0F, 0F).SetBorder(NO_BORDER))
+
+        '--------------------- MERCANCIA ---------------------
+
+        _nivel2 = New Table({320.0F, 360.0F, 320.0F})
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("Tipo de mercancía").SetTextAlignment(TextAlignment.CENTER).
+                    SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                    SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("Cantidad en Unidad de Medida de Comercialización").SetTextAlignment(TextAlignment.CENTER).
+                    SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                    SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("Cantidad en Unidad de medida de Tarifa").SetTextAlignment(TextAlignment.CENTER).
+                    SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                    SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph(" . ").SetTextAlignment(TextAlignment.CENTER).
+                    SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                    SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph(" . ").SetTextAlignment(TextAlignment.CENTER).
+                    SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                    SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph(" . ").SetTextAlignment(TextAlignment.CENTER).
+                    SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                    SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+        _nivel2.AddCell(New Cell(rowspan:=0, colspan:=3).Add(New Paragraph("Número de serie del certificado:").SetTextAlignment(TextAlignment.LEFT).
+                    SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                    SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+        _nivel2.AddCell(New Cell(rowspan:=0, colspan:=3).Add(New Paragraph("e.firma:").SetTextAlignment(TextAlignment.LEFT).
+                    SetFont(_itextHandler.Arial).SetFontSize(8.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                    SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+        _nivel1.AddCell(New Cell().Add(_nivel2).SetMargins(0F, 0.0F, 10.0F, 0.0F).SetPaddings(0F, 0F, 10.0F, 0F).SetBorder(NO_BORDER))
+
+        '--------------------- FIRMA ---------------------
+
+        _nivel2 = New Table({500.0F, 250.0F, 250.0F})
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("").SetTextAlignment(TextAlignment.CENTER).
+                    SetFont(_itextHandler.ArialBold).SetFontSize(9.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                    SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph(".").SetTextAlignment(TextAlignment.CENTER).
+                    SetFont(_itextHandler.ArialBold).SetFontSize(9.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                    SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("").SetTextAlignment(TextAlignment.CENTER).
+                    SetFont(_itextHandler.ArialBold).SetFontSize(9.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                    SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("").SetTextAlignment(TextAlignment.CENTER).
+                    SetFont(_itextHandler.ArialBold).SetFontSize(9.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                    SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("Nombre").SetTextAlignment(TextAlignment.CENTER).
+                    SetFont(_itextHandler.ArialBold).SetFontSize(9.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                    SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER).SetBorderTop(New SolidBorder(ColorConstants.BLACK, 0.5)))
+
+        _nivel2.AddCell(New Cell().Add(New Paragraph("").SetTextAlignment(TextAlignment.CENTER).
+                    SetFont(_itextHandler.ArialBold).SetFontSize(9.0F).SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetWordSpacing(0F)).
+                    SetMargins(0F, 0F, 0F, 0F).SetPaddings(0F, 0F, 0F, 0F).SetBorder(NO_BORDER))
+
+        _nivel1.AddCell(New Cell().Add(_nivel2).SetMargins(0F, 0.0F, 10.0F, 0.0F).SetPaddings(0F, 0F, 10.0F, 0F).SetBorder(NO_BORDER))
+
+        _itextHandler.Document.Add(_nivel1)
+
+        _itextHandler.Document.Close()
+
+        Dim inputAsString = _itextHandler.ConvertToString()
+
+        Return inputAsString
+
+
+    End Function
+
+    Public Function ImprimirFormatoPartesII(numeroRemesa_ As Int32, Optional ByVal documento_ As DocumentoElectronico = Nothing) As String _
         Implements IRepresentacionPedimento.ImprimirFormatoPartesII
 
         If documento_ IsNot Nothing Then
@@ -559,7 +1293,6 @@ Public Class RepresentacionPedimento
 
 
     End Function
-
     Private Function EncabezadoPrincipal()
 
         '====================================ENCABEZADO==============================================
