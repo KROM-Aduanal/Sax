@@ -6,7 +6,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentFindbar" runat="server">
 
     <style>
-        .CP_MODALIDAD_ADUANA_PATENTE .wc-select {
+        .CP_PATENTE .wc-select {
             top: 50%;
             -webkit-transform: translateY(-50%); /* WebKit */
             -moz-transform: translateY(-50%); /* Mozilla */
@@ -145,49 +145,35 @@
                     <GWC:ButtonItem Text="Generar partidas" />
                     <GWC:ButtonItem Text="Prevalidar" />
                     <GWC:ButtonItem Text="Validar" />
+                    <GWC:ButtonItem Text="Regenerar Secuencia" />
                 </DropdownButtons>
             </Buttonbar>
 
             <Fieldsets>
 
-                <GWC:FieldsetControl runat="server" ID="fscDatosGenerales" Label="Generales">                        
+                <GWC:FieldsetControl runat="server" ID="fscDatosGenerales" Label="Generales" TagName="ANS1">                        
                     <ListControls>
-                        <%--CP_REFERENCIA--%>
-                        <GWC:DualityBarControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" ID="dbcReferenciaPedimento" Label="Referencia aduanal" LabelDetail="Número de pedimento" />
 
+                        <GWC:DualityBarControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" ID="dbcReferenciaPedimento" Label="Referencia" LabelDetail="Número pedimento"/>                        
+                        
                         <asp:Panel runat="server" CssClass="col-xs-12 col-md-6 d-flex align-items-center mb-5">
-
-                            <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-6 pl-0" ID="scTipoReferencia" Label="Tipo referencia" OnSelectedIndexChanged="sc_TipoReferencia_SelectedIndexChanged">
-                                <Options>
-                                    <GWC:SelectOption Value="1" Text="Operativa" />
-                                    <GWC:SelectOption Value="2" Text="Corresponsalía" />
-                                    <GWC:SelectOption Value="3" Text="Corresponsalía terceros" />
-                                </Options>
-                            </GWC:SelectControl>
-
-                            <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-6 pr-0" ID="scPrefijoReferencia" Label="Prefijo" OnSelectedIndexChanged="sc_PrefijoReferencia_SelectedIndexChanged" />
-
+                        
+                            <GWC:SwitchControl runat="server" CssClass="col-xs-12 col-md-6" ID="swcTipoOperacion" Label="Tipo de operación" OnText="Importación" OffText="Exportación" Checked="true" Rules="required"> </GWC:SwitchControl>                       
+                            <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 pl-0" Type="Text" ID="icPesoBruto" Label="Peso bruto" Rules="onlynumber" />
+                            <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 pr-0" Type="Text" ID="icTipoCambio" Locked="true" Label="Tipo de cambio" />    
+                                                    
                         </asp:Panel>
-
-                        <GWC:SelectControl runat="server" CssClass="CP_MODALIDAD_ADUANA_PATENTE col-xs-12 col-md-6 mb-5" ID="scPatente" Label="Patente" OnClick="sc_Patente_Click">                            
-                        </GWC:SelectControl>
-
-                        <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-4 mb-5" ID="scEjecutivoCuenta" Label="Ejecutivo de cuenta" KeyField ="i_Cve_EjecutivosMisEmpresas" DisplayField ="t_NombreCompleto" Dimension ="EjecutivosMiEmpresa">                           
-                        </GWC:SelectControl>
-
-                        <%--CA_CVE_TIPO_OPERACION--%>
-                        <GWC:SwitchControl runat="server" CssClass="col-xs-12 col-md-2 mb-5 d-flex align-items-center jc-center" ID="swcTipoOperacion" Label="Tipo de operación" OnText="Importación" OffText="Exportación" Checked="true" Rules="required" OnCheckedChanged="swcTipoOperacion_CheckedChanged"></GWC:SwitchControl>                       
-
-                        <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" ID="scClavePedimento" Label="Clave Pedimento" KeyField="t_Cve_Pedimento" DisplayField="t_ClaveDescripcion" Dimension="Vt022ClavesPedimentoA02" OnSelectedIndexChanged="scClavePedimento_SelectedIndexChanged"/>
+                                            
+                        <GWC:SelectControl runat="server" CssClass="CP_PATENTE col-xs-12 col-md-6 mb-5" ID="scPatente" Label="Patente" OnClick="sc_Patente_Click"> </GWC:SelectControl>
+                      
+                        <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" ID="scClavePedimento" Label="Clave Pedimento" KeyField="t_Cve_Pedimento" DisplayField="t_ClaveDescripcion" Dimension="Vt022ClavesPedimentoA02"/>
 
                         <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-6 mb-6" ID="scRegimen" Label="Régimen" KeyField="t_Cve_Regimen" DisplayField="t_DescripcionCorta" Dimension="Vt022RegimenesA16" />
 
-                        <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" ID="scDestinoMercancia" Label="Destino de la mercancia" KeyField="i_ClaveDestinoMercancia" DisplayField="t_DescripcionDestinoMercancia" Dimension="Vt022DestinosMercanciasA15" />
-
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" ID="icTipoCambio" Locked="true" Label="Tipo de cambio" />
-
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" ID="icPesoBruto" Label="Peso bruto" Rules="onlynumber" />
-
+                        <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" ID="scDestinoMercancia" Label="Destino de la mercancia" KeyField="i_ClaveDestinoMercancia" DisplayField="t_ClaveDescripcion" Dimension="Vt022DestinosMercanciasA15"/>
+                        
+                        <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-6 pl-0" ID="scEjecutivoCuenta" Label="Ejecutivo de cuenta" KeyField ="i_Cve_EjecutivosMisEmpresas" DisplayField ="t_NombreCompleto" Dimension ="EjecutivosMiEmpresa" Visible="false"> </GWC:SelectControl>
+                                             
                         <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" ID="scAduanaEntradaSalida" Label="Aduana de entrada/salida" Enabled="false" KeyField="t_Cve_AduanaSeccion" DisplayField="t_ClaveDescripcion" Dimension="Vt022AduanaSeccionA01" OnClick="scAduanaEntradaSalida_Click" OnSelectedIndexChanged="scAduanaEntradaSalida_SelectedIndexChanged"/>
 
                         <GWC:SelectControl runat="server" CssClass="bg_Asistencias col-xs-12 col-md-6 mb-5" ID="scTransporteEntradaSalida" Label="Transporte entrada/salida" KeyField="t_Cve_MedioTransporte" DisplayField="t_ClaveDescripcion" Dimension="Vt022MediosTransporteA03" OnClick="scTransporteEntradaSalida_Click"/>
@@ -196,17 +182,19 @@
 
                         <GWC:SelectControl runat="server" CssClass="bg_Asistencias col-xs-12 col-md-6 mb-5" ID="scMedioTransporteSalida" Label="Medio de transporte /salida" KeyField="t_Cve_MedioTransporte" DisplayField="t_ClaveDescripcion" Dimension="Vt022MediosTransporteA03" OnClick="scMedioTransporteSalida_Click"/>
 
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" Type="Text" ID="icValorDolares" Label="Valor en dólares" Format="Money" Enabled="false" />
+                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" Type="Text" ID="icValorDolares" Label="Valor en dólares" Enabled="false" />
 
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" Type="Text" ID="icValorAduana" Label="Valor aduana" Enabled="false" />
+                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" Type="Text" ID="icValorAduana" Label="Valor aduana" Format="Money" Enabled="false" />
 
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" ID="icPrecioPagado" Label="Precio pagado/Valor comercial" Enabled="false" />
+                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" Type="Text" ID="icPrecioPagado" Label="Precio pagado/Valor comercial" Format="Money" Enabled="false" />
+                        
+                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3 mb-5 d-flex justify-content-center align-items-center" Type="Text" ID="icMarcasNumeros" Label="Marcas, Números y total de bultos" />
                         
                     </ListControls>
 
                 </GWC:FieldsetControl>
 
-                <GWC:FieldsetControl runat="server" ID="fscDatosImportador" Detail="Datos Importador" Label="Datos Importador">
+                <GWC:FieldsetControl runat="server" ID="fscDatosIOE" Detail="Datos Importador" Label="Importador">
 
                     <ListControls>
                         
@@ -215,16 +203,16 @@
                             <div class="col-xs-12 col-md-6 p-0">
 
                                 <GWC:FindboxControl runat="server" CssClass="col-xs-12 col-md-12 mb-5" ID="fbcCliente" Label ="Cliente" KeyField ="_id" DisplayField ="CA_RAZON_SOCIAL" OnTextChanged="fbc_Cliente_TextChanged" OnClick="fbc_Cliente_Click" />
+                                
+                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" Type="Text" ID="icRFCCliente" Label="RFC" Enabled="false" /> 
+                                
+                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" Type="Text" ID="icRFCFacturacion" Label="RFC facturación" />
 
-                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-12 mb-5" Type="Text" ID="icRFCCliente" Label="RFC" Enabled="false" />
-
-                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-12 mb-5" Type="Text" ID="icCURP" Label="CURP" Enabled="false" />
-
+                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" ID="icCURP" Label="CURP" Enabled="false" />
+                              
                             </div>
 
-                            <div class="col-xs-12 col-md-6 p-0">
-
-                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-12 mb-5" Type="Text" ID="icRFCFacturacion" Label="RFC facturación" />
+                            <div class="col-xs-12 col-md-6">
 
                                 <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-12 mb-5" Type="TextArea" ID="icDomicilioCliente" Label="Domicilio" Enabled="false" />
 
@@ -263,15 +251,15 @@
                         
                             <asp:Panel runat="server" CssClass="row fieldset " fieldset-legend="Valor incrementables">
                             
-                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-2 mb-5" Type="Text" ID="icValorSeguros" Label="Valor seguros" />
+                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-2 mb-5" Type="Text" ID="icValorSeguros" Label="Valor seguros" Format="Money"/>
 
-                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-2 mb-5" Type="Text" ID="icSeguros" Label="Seguros dec." />
+                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-2 mb-5" Type="Text" ID="icSeguros" Label="Seguros dec." Format="Money"/>
 
-                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-2 mb-5" Type="Text" ID="icFletes" Label="Fletes" />
+                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-2 mb-5" Type="Text" ID="icFletes" Label="Fletes" Format="Money"/>
 
-                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" Type="Text" ID="icEmbalajes" Label="Embalajes" />
+                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" Type="Text" ID="icEmbalajes" Label="Embalajes" Format="Money"/>
 
-                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" Type="Text" ID="icOtrosIncrementables" Label="Otros incrementables" />
+                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" Type="Text" ID="icOtrosIncrementables" Label="Otros incrementables" Format="Money"/>
 
                             </asp:Panel>
 
@@ -281,15 +269,15 @@
 
                             <asp:Panel runat="server" CssClass="row fieldset " fieldset-legend="Valor decrementables">
 
-                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-2" Type="Text" ID="icTransporteDec" Label="Transporte dec." />
+                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-2" Type="Text" ID="icTransporteDec" Label="Transporte dec." Format="Money"/>
 
-                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-2" Type="Text" ID="icSegurosDec" Label="Seguro dec." />
+                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-2" Type="Text" ID="icSegurosDec" Label="Seguro dec." Format="Money"/>
 
-                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-2" Type="Text" ID="icCargaDec" Label="Carga" />
+                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-2" Type="Text" ID="icCargaDec" Label="Carga" Format="Money"/>
 
-                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3" Type="Text" ID="icDescargaDec" Label="Descarga" />
+                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3" Type="Text" ID="icDescargaDec" Label="Descarga" Format="Money"/>
 
-                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3" Type="Text" ID="icOtrosDec" Label="Otros decrementables" />
+                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3" Type="Text" ID="icOtrosDec" Label="Otros decrementables" Format="Money"/>
 
                             </asp:Panel>
 
@@ -299,7 +287,7 @@
 
                 </GWC:FieldsetControl>
 
-                <GWC:FieldsetControl runat="server" ID="fscValidacionPago" Detail="Validación y pago" Label="Validación" Enabled="false">
+                <GWC:FieldsetControl runat="server" ID="fscValidacionPago" Detail="Validación y pago" Label="Validación" Enabled="false" Visible="false">
 
                     <ListControls>
 
@@ -338,9 +326,7 @@
 
                             <GWC:ImageControl CssClass="col-xs-12" runat="server" Source="/FrontEnd/Recursos/Imgs/barcode.jpg" Height="60px" Width="350px" Aspect="Cover" />
 
-                        </asp:Panel>
-
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5 d-flex justify-content-center align-items-center" Type="Text" ID="icMarcasNumeros" Label="Marcas, Números y total de bultos" />
+                        </asp:Panel>                                               
 
                         <%--ESTOS CAMPOS NO APARECEN EN LA METAFORA DEL mockflow--%>
                         <%--<GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" ID="CA_CLAVE_SAD" Label="Sección aduanera de despacho" />--%>
@@ -358,51 +344,47 @@
 
                 </GWC:FieldsetControl>
 
-                <GWC:FieldsetControl runat="server" ID="Fechas" Detail="Fechas" Label="Fechas">
+                <GWC:FieldsetControl runat="server" ID="fscFechas" Detail="Fechas" Label="Fechas">
 
                     <ListControls>
 
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" Format="Calendar" ID="icFechaRegistro" Label="Registro" />
+                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" Type="Text" Format="Calendar" ID="icFechaRegistro" Label="Registro"/>
 
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" Format="Calendar" ID="icFechaRevalidacion" Label="Revalidación" />
+                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" Type="Text" Format="Calendar" ID="icFechaPresentacion" Label="Presentación" OnTextChanged="icFecha_TextChanged" Visible="false"/>
 
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" Format="Calendar" ID="icFechaZarpe" Label="Zarpe" />
+                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" Type="Text" Format="Calendar" ID="icFechaEntrada" Label="Entrada" OnTextChanged="icFecha_TextChanged"/>                                               
 
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" Format="Calendar" ID="icFechaPrevio" Label="Previo" />
+                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" Type="Text" Format="Calendar" ID="icFechaRevalidacion" Label="Revalidación" Visible="false"/>
 
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" Format="Calendar" ID="icFechaFondeo" Label="Fondeo" />
+                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" Format="Calendar" ID="icFechaZarpe" Label="Zarpe" Visible="false"/>
 
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" Format="Calendar" ID="icFechaPago" Label="pago de pedimento" />
+                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" Type="Text" Format="Calendar" ID="icFechaPrevio" Label="Previo" Visible="false"/>
 
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" Format="Calendar" ID="icFechaAtraque" Label="Atraque" />
+                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" Format="Calendar" ID="icFechaFondeo" Label="Fondeo" Visible="false"/>                                                
 
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" Format="Calendar" ID="icFechaDespacho" Label="Despacho" />
+                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" Type="Text" Format="Calendar" ID="icFechaPago" Label="pago de pedimento"/>
 
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" Format="Calendar" ID="icFechaEstimadaArribo" Label="Estimada de arribo" />
+                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" Type="Text" Format="Calendar" ID="icFechaDespacho" Label="Despacho"/>
 
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" Format="Calendar" ID="icFechaEntrega" Label="Entrega" />
+                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" Format="Calendar" ID="icFechaAtraque" Label="Atraque" Visible="false"/>
 
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" Format="Calendar" ID="icFechaEntrada" Label="Entrada" OnTextChanged="icFecha_TextChanged"/>
+                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" Format="Calendar" ID="icFechaEstimadaArribo" Label="Estimada de arribo" Visible="false"/>
 
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" Format="Calendar" ID="icFechaPresentacion" Label="Presentación" OnTextChanged="icFecha_TextChanged" Visible="false"/>
+                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" Format="Calendar" ID="icFechaEntrega" Label="Entrega" Visible="false"/>
 
+                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6" Type="Text" Format="Calendar" ID="icFechaExtraccion" Label="Extracción" Visible="false"/>
 
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" Format="Calendar" ID="icFechaFacturacion" Label="Facturación" />
+                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" Format="Calendar" ID="icFechaFacturacion" Label="Facturación" Visible="false"/>
 
-                        <%--ESTOS CAMPOS NO APARECEN EN LA METAFORA DEL mockflow--%>
-                        <%--<GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6" Type="Text" Format="Calendar" ID="CA_FECHA_EXTRACCION" Label="Extracción" />
+                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6" Type="Text" Format="Calendar" ID="icFechaIMPEUACAN" Label="IMP EUA CAN" Visible="false"/>
 
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6" Type="Text" Format="Calendar" ID="CA_FECHA_PRESENTACION" Label="Presentación" />
-
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6" Type="Text" Format="Calendar" ID="CA_FECHA_IMP_EUA_CAN" Label="IMP EUA CAN" />
-
-                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6" Type="Text" Format="Calendar" ID="CA_FECHA_ORIGINAL" Label="Original" />--%>
+                        <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6" Type="Text" Format="Calendar" ID="icFechaOriginal" Label="Original" Visible="false"/>
 
                     </ListControls>
 
                 </GWC:FieldsetControl>
 
-                <GWC:FieldsetControl runat="server" ID="fscTasasContribuciones" Detail="Tasas y totales" Label="Tasas y totales">
+                <GWC:FieldsetControl runat="server" ID="fscTasasContribuciones" Detail="Tasas y totales" Label="Tasas y totales" Visible="false">
 
                     <ListControls>
 
@@ -424,7 +406,7 @@
 
                 </GWC:FieldsetControl>
 
-                <GWC:FieldsetControl runat="server" ID="fscCuadroLiquidacion" Detail="Cuadro de liquidación" Label="Cuadro de liquidación">
+                <GWC:FieldsetControl runat="server" ID="fscCuadroLiquidacion" Detail="Cuadro de liquidación" Label="Cuadro de liquidación" Visible="false">
 
                     <ListControls>
 
@@ -464,7 +446,7 @@
 
                 </GWC:FieldsetControl>
 
-                <GWC:FieldsetControl runat="server" ID="fscCetificacion" Detail="Certificación" Label="Certificación" Visible="false">
+                <GWC:FieldsetControl runat="server" ID="fscCertificacion" Detail="Certificación" Label="Certificación" Visible="false">
 
                     <ListControls>
 
@@ -530,7 +512,7 @@
 
                 </GWC:FieldsetControl>
 
-                <GWC:FieldsetControl runat="server" ID="fscDatosProveedoresImpo" Detail="Proveedores" Label="Datos de proveedores">
+                <GWC:FieldsetControl runat="server" ID="fscDatosPOC" Detail="Proveedores" Label="Datos de proveedores">
 
                     <ListControls>
 
@@ -543,20 +525,22 @@
 
                                         <GWC:FindboxControl runat="server" CssClass="col-md-12 mb-5" ID="fbxProveedor" Label="Nombre, denominación, razon social" KeyField="_id" DisplayField="razonsocial" OnTextChanged="fbxProveedor_TextChanged"/>
 
-                                        <GWC:InputControl runat="server" CssClass="col-md-12 mt-4 mb-5" Type="Text" ID="icIdFiscalProveedor" Label="ID Fiscal" Enabled="false" />
+                                        <GWC:InputControl runat="server" CssClass="col-md-6 mt-4 mb-5" Type="Text" ID="icIdFiscalProveedor" Label="ID Fiscal" Enabled="false" />
+                                                                                
+                                        <GWC:SelectControl runat="server" CssClass="col-md-6 mt-4 mb-5" ID="scVinculacion" Label="Vinculación"/>
 
                                     </asp:Panel>
 
                                     <asp:Panel runat="server" CssClass="col-xs-12 col-md-6 p-0">
 
                                         <GWC:InputControl runat="server" CssClass="col-md-12 mb-5" Type="TextArea" ID="icDocimilioProveedor" Label="Domicilio" Enabled="false" />
-
+                                        
                                     </asp:Panel>
                                     
                                     <GWC:FieldsetControl runat="server" Label="Facturas" Priority="false">
                                         <ListControls>
 
-                                            <GWC:CatalogControl ID="ccFacturas" runat="server" KeyField="Catalogo_facturas" CssClass="w-100 mt-5 mb-5 p-0" OnRowChanged="ccFacturas_RowChanged">
+                                        <GWC:CatalogControl ID="ccFacturas" runat="server" KeyField="Catalogo_facturas" CssClass="w-100 mt-5 mb-5 p-0" OnRowChanged="ccFacturas_RowChanged">
 
                                             <Columns>
 
@@ -576,18 +560,29 @@
 
                                         </GWC:CatalogControl>
 
+                                        <GWC:CatalogControl ID="ccAcuseValor" runat="server" KeyField="Catalogo_acusevalor" CssClass="col-md-12 mt-5 p-0" UserInteraction="false">
+                                            
+                                            <Columns>
+                                                
+                                                <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-12" ID="scAcuseValor" Label="Acuse Valor"></GWC:SelectControl>
+
+                                                <GWC:SwitchControl runat="server" CssClass="col-xs-12 col-md-12 d-flex align-items-center jc-center" ID="swcVinculacion" Label="Vinculación" OnText="Si" OffText="No" />
+
+                                                <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-12" ID="scINCOTERM" Label="INCOTERM"> </GWC:SelectControl>
+
+                                            </Columns>
+
+                                        </GWC:CatalogControl>
+
                                         </ListControls>
                                     </GWC:FieldsetControl>
 
-                                </ListControls>
+                            </ListControls>
 
                             </GWC:PillboxControl>
-
-                                
-
-                           
-
-                            <%--<GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6" Type="Text" ID="CA_CALLE_POC" Label="Calles" />
+                                                    
+                                                  
+                        <%--<GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6" Type="Text" ID="CA_CALLE_POC" Label="Calles" />
 
                             <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6" Type="Text" ID="CA_NUMERO_INT_POC" Format="Numeric" Label="# Interior" />
 
@@ -609,31 +604,8 @@
                                 <Options>
                                     <GWC:SelectOption Text="Selecciona" Value="1" />
                                 </Options>
-                            </GWC:SelectControl>--%>
-                       
-
-                        <%--<GWC:CatalogControl ID="ccProveedores" runat="server" KeyField="Catalogo_proveedor" CssClass="col-md-12 mt-5 p-0">
-
-                            <Columns>
-
-                                <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-12" ID="CA_COVE" Label="COVE">
-                                    <Options>
-                                        <GWC:SelectOption Text="Selecciona" Value="1" />
-                                    </Options>
-                                </GWC:SelectControl>
-
-                                <GWC:SwitchControl runat="server" CssClass="col-xs-12 col-md-12 d-flex align-items-center jc-center" ID="CA_VINCULACION" Label="Vinculación" OnText="Si" OffText="No" />
-
-                                <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-12" ID="proveedor_CA_INCOTERM" Label="INCOTERM">
-                                    <Options>
-                                        <GWC:SelectOption Text="Selecciona" Value="1" />
-                                    </Options>
-                                </GWC:SelectControl>
-
-                            </Columns>
-
-                        </GWC:CatalogControl>--%>
-
+                            </GWC:SelectControl>--%>                   
+                                                
                     </ListControls>
 
                 </GWC:FieldsetControl>
@@ -743,7 +715,7 @@
 
                 </GWC:FieldsetControl>--%>
 
-                <GWC:FieldsetControl runat="server" ID="fscDestinatarios" Detail="Datos destinatarios" Label="Destinatarios">
+                <GWC:FieldsetControl runat="server" ID="fscDestinatarios" Detail="Datos destinatarios" Label="Destinatarios" Visible="false">
 
                     <ListControls>
 
@@ -858,18 +830,14 @@
 
                                     <div class="col-xs-12 col-md-6 mt-5 p-0">
 
-                                        <GWC:InputControl runat="server" CssClass="col-md-12 mb-5" Type="Text" ID="icIDTransporte" Label="Identificación" />
+                                        <GWC:InputControl runat="server" CssClass="col-md-12 mb-5" Type="Text" ID="icIDTransporte" Label="Identificación"/>
 
-                                        <GWC:SelectControl runat="server" CssClass="col-md-12 mb-5" ID="scPaisTransporte" Label="País" KeyField="t_ClaveSAAIM3" DisplayField="t_Pais" Dimension="Vt022PaisesA04" />
+                                        <GWC:SelectControl runat="server" CssClass="col-md-12 mb-5" ID="scPaisTransporte" Label="País" KeyField="t_ClaveSAAIM3" DisplayField="t_Pais" Dimension="Vt022PaisesA04"/>
 
-                                        <GWC:SelectControl runat="server" CssClass="col-md-12 mb-5" ID="scTransportista" Label="Transportista">
-                                            <Options>
-                                                <GWC:SelectOption Text="Auto Express Hércules, S.A. de C.V." Value="1" />
-                                                <GWC:SelectOption Text="Fletes Sotelo, S.A. de C.V." Value="1" />
-                                            </Options>
-                                        </GWC:SelectControl>
+                                        <GWC:SelectControl runat="server" CssClass="col-md-12 mb-5" ID="scTransportista" Label="Transportista"/>
 
                                     </div>
+
                                     <div class="col-xs-12 col-md-6 mt-5 p-0">
 
                                         <GWC:InputControl runat="server" CssClass="col-xs-12 mb-5" Type="Text" ID="icTransportistaRfc" Label="RFC" />
@@ -914,74 +882,75 @@
 
                 </GWC:FieldsetControl>
 
-                <GWC:FieldsetControl runat="server" ID="fsDatosCandados" Detail="Candados" Label="Candados">
-                    <ListControls>
-
-                        <GWC:CatalogControl ID="ccCandados" runat="server" KeyField="Catalogo_candados" CssClass="w-100">
-
-                            <Columns>
-
-                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6" Type="Text" ID="icNumeroCandado" Label="Candado" />
-
-                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6" Type="Text" ID="icCandadoPrimeraRevisión" Label="Primera revisión" />
-
-                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6" Type="Text" ID="icCandadoSegundaRevision" Label="Segunda revisión" />
-
-                            </Columns>
-
-                        </GWC:CatalogControl>
-
-                    </ListControls>
-                    
-                </GWC:FieldsetControl>
-
                 <GWC:FieldsetControl runat="server" ID="fscGuias" Detail="Guias, manifiestos / conocimientos de embarque" Label="Guías">
-                   
-                    <ListControls>
+   
+    <ListControls>
 
-                        <GWC:CatalogControl ID="ccGuias" runat="server" KeyField="Catalogo_guias" CssClass="w-100">
+        <GWC:CatalogControl ID="ccGuias" runat="server" KeyField="Catalogo_guias" CssClass="w-100">
 
-                            <Columns>
+            <Columns>
 
-                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" ID="icGuia" Label="Guía, manifiestos o BL" />
+                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" ID="icGuia" Label="Guía, manifiestos o BL" />
 
-                                <%--<GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" ID="CA_MASTER_O_HOUSE" Label="Guía maester o house" />--%>
+                <%--<GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" Type="Text" ID="CA_MASTER_O_HOUSE" Label="Guía maester o house" />--%>
 
-                                <%--<GWC:SelectControl runat="server" CssClass="col-md-12 mt-5" ID="" Label="Número de guía | conocimiento embarque">
-                                    <Options>
-                                        <GWC:SelectOption Text="Selecciona" Value="1" />
-                                    </Options>
-                                </GWC:SelectControl>--%>
+                <%--<GWC:SelectControl runat="server" CssClass="col-md-12 mt-5" ID="" Label="Número de guía | conocimiento embarque">
+                    <Options>
+                        <GWC:SelectOption Text="Selecciona" Value="1" />
+                    </Options>
+                </GWC:SelectControl>--%>
 
-                                <GWC:SwitchControl runat="server" CssClass="col-md-12 mt-5 d-flex align-items-center jc-center" ID="swcTipoGuia" Label="ID (Tipo de guía) " OnText="Master" OffText="House" />
+                <GWC:SwitchControl runat="server" CssClass="col-md-12 mt-5 d-flex align-items-center jc-center" ID="swcTipoGuia" Label="ID (Tipo de guía) " OnText="Master" OffText="House" />
 
-                            </Columns>
+            </Columns>
 
-                        </GWC:CatalogControl>
+        </GWC:CatalogControl>
 
-                    </ListControls>
+    </ListControls>
 
-                </GWC:FieldsetControl>
+</GWC:FieldsetControl>
 
-                <GWC:FieldsetControl runat="server" ID="fscContenedores" Detail="Contenedores" Label="Contenedores">
+<GWC:FieldsetControl runat="server" ID="fscContenedores" Detail="Contenedores" Label="Contenedores">
 
-                    <ListControls>
+    <ListControls>
 
-                        <GWC:CatalogControl ID="ccContenedores" runat="server" KeyField="Catalogo_contenedores" CssClass="w-100">
+        <GWC:CatalogControl ID="ccContenedores" runat="server" KeyField="Catalogo_contenedores" CssClass="w-100">
 
-                            <Columns>
+            <Columns>
 
-                                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-12" Type="Text" ID="icNumeroContenedor" Label="Número  de cont | Equipo ferrocarril | Núm. económico" />
+                <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-12" Type="Text" ID="icNumeroContenedor" Label="Número  de cont | Equipo ferrocarril | Núm. económico" />
 
-                                <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-12" ID="scTipoContenedor" Label="Tipo" KeyField="i_ClaveTipoContenedorVehiculoTransporte" DisplayField="t_DescripcionTipoContenedorVehiculoTransporte" Dimension="Vt022TiposContenedoresVehiculosTransporteA10" />
+                <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-12" ID="scTipoContenedor" Label="Tipo" KeyField="i_ClaveTipoContenedorVehiculoTransporte" DisplayField="t_DescripcionTipoContenedorVehiculoTransporte" Dimension="Vt022TiposContenedoresVehiculosTransporteA10" />
 
-                            </Columns>
+            </Columns>
 
-                        </GWC:CatalogControl>
+        </GWC:CatalogControl>
 
-                    </ListControls>
+    </ListControls>
 
-                </GWC:FieldsetControl>
+</GWC:FieldsetControl>
+
+<GWC:FieldsetControl runat="server" ID="fsDatosCandados" Detail="Candados" Label="Candados">
+                    
+    <ListControls>
+                
+        <GWC:CatalogControl ID="ccCandados" runat="server" KeyField="Catalogo_candados" CssClass="w-100">
+
+                <Columns>
+
+                    <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6" Type="Text" ID="icNumeroCandado" Label="Candado" />
+
+                    <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6" Type="Text" ID="icCandadoPrimeraRevisión" Label="Primera revisión" />
+
+                    <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6" Type="Text" ID="icCandadoSegundaRevision" Label="Segunda revisión" />
+
+                </Columns>
+
+            </GWC:CatalogControl>
+
+        </ListControls>
+                    
+    </GWC:FieldsetControl>                                                              
 
                 <%--<GWC:FieldsetControl runat="server" ID="fscCandados" Detail="Candados" Label="Candados">
 
@@ -1063,7 +1032,7 @@
 
                 </GWC:FieldsetControl>
 
-                <GWC:FieldsetControl runat="server" ID="fscCuentasAduaneras" Detail="Cuentas aduaneras" Label="Cuentas aduaneras">
+                <GWC:FieldsetControl runat="server" ID="fscCuentasAduaneras" Detail="Cuentas aduaneras" Label="Cuentas aduaneras" Visible="false">
 
                     <ListControls>
 
@@ -1125,7 +1094,7 @@
 
                 </GWC:FieldsetControl>
 
-                <GWC:FieldsetControl runat="server" ID="fscPagosvirtuales" Detail="Formas de pago virtual" Label="Pago virtual">
+                <GWC:FieldsetControl runat="server" ID="fscPagosvirtuales" Detail="Formas de pago virtual" Label="Pago virtual" Visible="false">
 
                     <ListControls>
 
@@ -1203,7 +1172,7 @@
 
                 </GWC:FieldsetControl>
 
-                <GWC:FieldsetControl runat="server" ID="fscDiferenciaContribuciones" Detail="Diferencias de contribuciones" Label="Dif. contribuciones" CssClass="col-md-12">
+                <GWC:FieldsetControl runat="server" ID="fscDiferenciaContribuciones" Detail="Diferencias de contribuciones" Label="Dif. contribuciones" CssClass="col-md-12" Visible="false">
 
                     <ListControls>
 
@@ -1234,7 +1203,7 @@
 
                 </GWC:FieldsetControl>
 
-                <GWC:FieldsetControl runat="server" ID="fscDescargos" Detail="Descargos" Label="Descargos" CssClass="col-md-12">
+                <GWC:FieldsetControl runat="server" ID="fscDescargos" Detail="Descargos" Label="Descargos" CssClass="col-md-12" Visible="false">
 
                     <ListControls>
 
@@ -1278,7 +1247,7 @@
 
                 </GWC:FieldsetControl>
 
-                <GWC:FieldsetControl runat="server" ID="fscCompensaciones" Detail="Compensaciones" Label="Compensaciones" CssClass="col-md-12">
+                <GWC:FieldsetControl runat="server" ID="fscCompensaciones" Detail="Compensaciones" Label="Compensaciones" CssClass="col-md-12" Visible="false">
 
                     <ListControls>
 
@@ -1324,7 +1293,7 @@
 
                 </GWC:FieldsetControl>
 
-                <GWC:FieldsetControl runat="server" ID="fscPruebaSuficiente" Detail="Prueba suficiente" Label="Prueba suficiente" CssClass="col-md-12">
+                <GWC:FieldsetControl runat="server" ID="fscPruebaSuficiente" Detail="Prueba suficiente" Label="Prueba suficiente" CssClass="col-md-12" Visible="false">
 
                     <ListControls>
 
@@ -1354,7 +1323,7 @@
 
                 </GWC:FieldsetControl>
 
-                <GWC:FieldsetControl runat="server" ID="fscObservaciones" Detail="Observaciones / a nivel pedimento" Label="Observaciones ped.">
+                <GWC:FieldsetControl runat="server" ID="fscObservaciones" Detail="Observaciones / a nivel pedimento" Label="Observaciones">
 
                     <ListControls>
 
@@ -1364,7 +1333,7 @@
 
                 </GWC:FieldsetControl>
 
-                <GWC:FieldsetControl runat="server" ID="fscPartidas" Detail="Partidas" Label="Partidas">
+                <GWC:FieldsetControl runat="server" ID="fscPartidas" Detail="Partidas" Label="Partidas" Visible="false">
 
                     <ListControls>
 
@@ -1381,7 +1350,7 @@
                                                 <asp:Label runat="server" ID="lbSecuencia" Text="1"></asp:Label>
                                             </asp:Label>
                                             
-                                            <GWC:FindboxControl runat="server" CssClass="col-xs-12 col-md-7" ID="icFraccionArancelaria" Label="Fracción" OnTextChanged="icFraccionArancelaria_TextChanged" OnClick="icFraccionArancelaria_Click"/>
+                                            <GWC:FindboxControl runat="server" CssClass="col-xs-12 col-md-7" ID="icFraccionArancelaria" Label="Fracción"/>
 
                                             <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-4" Type="Text" ID="icNico" Label="Nico"/>
 
@@ -1458,7 +1427,7 @@
 
                                                     <GWC:SelectControl runat="server" ID="scPartidaContribucion" Label="Contribución" KeyField="i_ClaveContribucion" DisplayField="t_Abreviacion" Dimension="Vt022ContribucionesA12" />
 
-                                                    <GWC:SelectControl runat="server" ID="scPartidaTipoTasa" Label="Cve. Tipo Tasa" KeyField="i_ClaveTipoTasa" DisplayField="t_DescripcionTipoTasa" Dimension="Vt022TiposTasasA18" />
+                                                    <GWC:SelectControl runat="server" ID="scPartidaTipoTasa" Label="Cve. Tipo Tasa" KeyField="i_ClaveTipoTasa" DisplayField="t_ClaveDescripcion" Dimension="Vt022TiposTasasA18" />
 
                                                     <GWC:InputControl runat="server" Type="Text" ID="icPartidaTasa" Label="Tasa" />
                                    
@@ -1497,7 +1466,7 @@
                                         </ListControls>
                                     </GWC:FieldsetControl>
 
-                                    <GWC:FieldsetControl runat="server" Priority="false" Label="Complementos">
+                                    <GWC:FieldsetControl runat="server" Priority="false" Label="Identificadores">
                                         <ListControls>
 
                                             <GWC:CatalogControl ID="ccPartidasIdentificadores" runat="server" KeyField="indice" CssClass="w-100 mb-5">

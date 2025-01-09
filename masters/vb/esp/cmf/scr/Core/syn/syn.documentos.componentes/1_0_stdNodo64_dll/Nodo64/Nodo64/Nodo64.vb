@@ -22,6 +22,8 @@ Namespace Syn.Documento.Componentes
 
         Private _tipoNodo As TiposNodo
 
+        Private _configuracionNodo As ConfiguracionNodo
+
 #Region "Enum"
         Enum TiposNodo
             SinDefinir = 0
@@ -196,9 +198,25 @@ Namespace Syn.Documento.Componentes
         <BsonIgnoreIfNull>
         Public Property archivado As Boolean
 
+        <BsonIgnore>
+        Public Property ConfiguracionNodo As ConfiguracionNodo
+
+            Get
+
+                Return _configuracionNodo
+
+            End Get
+
+            Set(value As ConfiguracionNodo)
+
+                _configuracionNodo = value
+
+            End Set
+
+        End Property
+
 #End Region
 
     End Class
-
 
 End Namespace

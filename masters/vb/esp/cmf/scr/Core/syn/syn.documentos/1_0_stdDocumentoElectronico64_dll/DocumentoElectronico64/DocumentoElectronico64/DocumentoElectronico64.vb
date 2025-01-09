@@ -99,7 +99,6 @@ Namespace Syn.Documento
             End Set
         End Property
 
-
         <BsonIgnore>
         Public Property SubscriptionsGroup As List(Of subscriptionsgroup)
             Get
@@ -165,7 +164,6 @@ Namespace Syn.Documento
                 _idCliente = value
             End Set
         End Property
-
 
         <BsonElement("TipoPropietario")>
         Public Property TipoPropietario As String
@@ -276,6 +274,7 @@ Namespace Syn.Documento
             End Set
 
         End Property
+
         Public Property Attribute(ByVal claveCampo_ As Integer,
                                   Optional ByVal direccionArray_ As Object(,) = Nothing) As Campo
 
@@ -292,7 +291,6 @@ Namespace Syn.Documento
             End Set
 
         End Property
-
 
         <BsonElement("Metadatos")>
         <BsonIgnoreIfDefault>
@@ -311,6 +309,26 @@ Namespace Syn.Documento
             End Set
 
         End Property
+
+        <BsonIgnore>
+        Public Property ConfiguracionSecciones(Optional ByVal enumSeccion_ As [Enum] = Nothing,
+                                               Optional ByVal tipoBloque_ As TiposBloque = Nothing,
+                                               Optional ByVal configuracionNodo_ As ConfiguracionNodo = Nothing) As Dictionary(Of [Enum], ConfiguracionNodo)
+
+            Get
+
+                Return ObtenerConfiguracionesSecciones()
+
+            End Get
+
+            Set(value As Dictionary(Of [Enum], ConfiguracionNodo))
+
+                ActualizarConfiguracionSeccion(enumSeccion_, tipoBloque_, configuracionNodo_)
+
+            End Set
+
+        End Property
+
 #End Region
 
 #Region "Builders"
@@ -336,6 +354,7 @@ Namespace Syn.Documento
             _operacionesNodo = New OperacionesNodos()
 
         End Sub
+
         Sub New(ByVal referencia_ As String, ByVal tipoDocumentoElectronico_ As TiposDocumentoElectronico, ByVal nombreCliente_ As String,
                 ByVal idCliente_ As Int32, ByVal idCorporativo_ As Int32, ByVal nombreCorporativoEmpresarial_ As String, ByVal idSucursal_ As Int32,
                 ByVal localidad_ As String, ByVal nombreSucursal_ As String, ByVal aduanaSeccion_ As String, ByVal relacionInterna_ As String,
@@ -438,6 +457,7 @@ Namespace Syn.Documento
 #End Region
 
 #Region "Methods"
+
         Sub Inicializa(ByRef documentoElectronico_ As DocumentoElectronico,
                         ByVal tipoDocumento_ As TiposDocumentoElectronico,
                         ByVal construir_ As Boolean)
@@ -510,10 +530,11 @@ Namespace Syn.Documento
 
                 End If
 
+                ConfigurarSecciones()
+
             End If
 
         End Sub
-
 
         Public Sub Inicializa(ByVal folioDocumento_ As String,
                         ByVal folioOperacion_ As String,
@@ -545,6 +566,8 @@ Namespace Syn.Documento
 
             'Autoconstruccion
             ensamblador_.Construye(Me)
+
+            ConfigurarSecciones()
 
         End Sub
 
@@ -588,6 +611,8 @@ Namespace Syn.Documento
             'Autoconstruccion
             ensamblador_.Construye(Me)
 
+            ConfigurarSecciones()
+
         End Sub
 
         Public Overrides Sub ConstruyeEncabezado()
@@ -603,6 +628,7 @@ Namespace Syn.Documento
         End Sub
 
         Public Overrides Sub GeneraDocumento()
+
         End Sub
 
         'Propiedades para memento
@@ -629,6 +655,7 @@ Namespace Syn.Documento
             '                         ListaSecciones)
 
         End Function
+
         Public Sub RestauraInstantanea(ByVal memento_ As Object) ' MementoObject)
 
             '_referencia = memento_.Referencia
@@ -680,11 +707,13 @@ Namespace Syn.Documento
             Dispose(disposing:=False)
             MyBase.Finalize()
         End Sub
+
         Public Sub Dispose() Implements IDisposable.Dispose
             ' No cambie este código. Coloque el código de limpieza en el método "Dispose(disposing As Boolean)".
             Dispose(disposing:=True)
             GC.SuppressFinalize(Me)
         End Sub
+
         Protected Overridable Sub Dispose(disposing As Boolean)
             If Not Me.disposedValue Then
                 If disposing Then
@@ -811,6 +840,7 @@ Namespace Syn.Documento
             Return objResult_
 
         End Function
+
         Public Function Clone(ByVal documentoClonado_ As Object) As Object
 
             documentoClonado_ = Me.Clone()
@@ -822,7 +852,6 @@ Namespace Syn.Documento
 #End Region
 
 #Region "Functions"
-
 
         '************* Refactory *****************
         Public Overridable Sub ConstruyeSeccion(ByVal seccionEnum_ As [Enum],
@@ -840,6 +869,23 @@ Namespace Syn.Documento
                          })
 
                 End With
+
+            End If
+
+        End Sub
+
+        Private Sub ActualizarConfiguracionSeccion(ByVal seccionEnum_ As [Enum],
+                                    ByVal tipoBloque_ As TiposBloque,
+                                    ByVal configuracion_ As ConfiguracionNodo)
+
+            If ExisteSeccion(seccionEnum_,
+                                 tipoBloque_) Then
+
+                Dim seccion_ = ObtenerSeccion(seccionEnum_)
+
+                seccion_.ConfiguracionNodo = configuracion_
+
+                ActualizarSeccion(seccionEnum_, seccion_)
 
             End If
 
@@ -889,13 +935,21 @@ Namespace Syn.Documento
 
         End Function
 
-
         Public Overridable Function Item(ByVal seccionEnum_ As [Enum],
                                          Optional conCampos_ As Boolean = True) As NodoGenerico
 
             Return New NodoGenerico With {.Nodos = EnsamblarSeccion(seccionEnum_, conCampos_)}
 
         End Function
+
+        Public Overridable Sub Item(ByVal seccionEnum_ As [Enum],
+                                    ByVal tipoBloque_ As TiposBloque,
+                                    ByVal idPermiso_ As Integer,
+                                    ByVal tipoVisibilidad_ As ConfiguracionNodo.TiposVisibilidad)
+
+            ActualizarConfiguracionSeccion(seccionEnum_, tipoBloque_, New ConfiguracionNodo With {.IdPermiso = idPermiso_, .TipoVisibilidad = tipoVisibilidad_})
+
+        End Sub
 
         Public Overridable Function Def(ByVal campoEnum_ As [Enum],
                                         ByVal tipo_ As Syn.Documento.Componentes.Campo.TiposDato,
@@ -945,11 +999,6 @@ Namespace Syn.Documento
 
         End Function
 
-        'Public Overridable Function EnsamblarCampo(ByVal idCampo_ As Integer) As List(Of Nodo)
-
-
-        'End Function
-
         Public Overridable Function EnsamblarCampo(ByVal campoEnum_ As [Enum],
                                                    ByVal tipo_ As Campo.TiposDato,
                                                    Optional ByVal longitud_ As Int32? = 10,
@@ -966,7 +1015,9 @@ Namespace Syn.Documento
 
         End Function
 
+        Public Overridable Sub ConfigurarSecciones()
 
+        End Sub
 
         '**************Overrides****************
 
@@ -996,6 +1047,7 @@ Namespace Syn.Documento
             Return False
 
         End Function
+
         Protected Function ObtenerSeccion(ByVal claveSeccion_ As Object) As Seccion
 
             Dim seccion_ = Nothing
@@ -1039,6 +1091,7 @@ Namespace Syn.Documento
             Return Nothing
 
         End Function
+
         Protected Function ObtenerCampo(ByVal claveCampo_ As Integer) As Campo
 
             Dim campo_ = Nothing
@@ -1060,6 +1113,7 @@ Namespace Syn.Documento
             Return Nothing
 
         End Function
+
         Private Function ActualizarSeccion(ByVal claveSeccion_ As Object,
                                            ByVal seccionNueva_ As Object) As Boolean
 
@@ -1081,6 +1135,7 @@ Namespace Syn.Documento
             Return False
 
         End Function
+
         Private Function ActualizarCampo(ByVal claveCampo_ As Integer,
                                     ByVal campoNuevo_ As Object) As Boolean
 
@@ -1100,6 +1155,49 @@ Namespace Syn.Documento
             Next
 
             Return False
+
+        End Function
+
+        Private Function ObtenerConfiguracionesSecciones() As Dictionary(Of [Enum], ConfiguracionNodo)
+
+            Dim seccion_ As New Dictionary(Of [Enum], ConfiguracionNodo)
+
+            For Each parDatos_ As KeyValuePair(Of String, List(Of Nodo)) In _estructuraDocumento.Parts
+
+                If parDatos_.Value.Count > 1 Then
+
+                    For Each seccionCuerpo_ As Nodo In parDatos_.Value
+
+                        If seccionCuerpo_.Nodos(0).ConfiguracionNodo IsNot Nothing Then
+
+                            seccion_.Add((DirectCast(seccionCuerpo_.Nodos(0), SeccionGenerica).SeccionGenerica), seccionCuerpo_.Nodos(0).ConfiguracionNodo)
+
+                        End If
+
+                    Next
+
+                Else
+
+                    If parDatos_.Value(0).Nodos(0).ConfiguracionNodo IsNot Nothing Then
+
+                        seccion_.Add((DirectCast(parDatos_.Value(0).Nodos(0), SeccionGenerica).SeccionGenerica), parDatos_.Value(0).Nodos(0).ConfiguracionNodo)
+
+                    End If
+
+
+                End If
+
+            Next
+
+            If Not IsNothing(seccion_) Then
+
+                Return seccion_
+
+            Else
+
+                Return Nothing
+
+            End If
 
         End Function
 
@@ -1141,6 +1239,7 @@ Namespace Syn.Documento
             End Try
 
         End Function
+
         Function field(ByVal name As String, Optional ByVal id As Int32? = Nothing, Optional ByVal nsp As Int32? = Nothing, Optional ByVal attr As String = Nothing,
                        Optional ByVal fname As String = Nothing, Optional ByVal fid As Int32? = Nothing, Optional ByVal fnsp As Int32? = Nothing, Optional ByVal fattr As String = Nothing,
                        Optional ByVal arrayfilters As String = Nothing) As fieldInfo

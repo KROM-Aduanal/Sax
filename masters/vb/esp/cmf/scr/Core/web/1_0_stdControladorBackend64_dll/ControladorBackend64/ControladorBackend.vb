@@ -20,6 +20,7 @@ Imports gsol
 Imports System.Xml.Serialization
 Imports System.IO
 Imports Syn.Operaciones
+Imports ConfiguracionNodo
 
 Public Class ControladorBackend
     Inherits Template.FormularioGeneralWeb
@@ -127,6 +128,8 @@ Public Class ControladorBackend
     '***********************  S t a t e m e n t s   S a x  ***************************
     Private _statements As Sax.SaxStatements = Sax.SaxStatements.GetInstance()
 
+    Private _configuracionesSecciones As Dictionary(Of [Enum], ConfiguracionNodo)
+
 #End Region
 
 #Region "Propiedades"
@@ -201,9 +204,23 @@ Public Class ControladorBackend
     End Property
 
     Public ReadOnly Property Buscador As FindbarControl
+
         Get
+
             Return DirectCast(Master.FindControl("ContentFindbar").FindControl("__SYSTEM_CONTEXT_FINDER"), FindbarControl)
+
         End Get
+
+    End Property
+
+    Public ReadOnly Property ConfiguracionesSecciones As Dictionary(Of [Enum], ConfiguracionNodo)
+
+        Get
+
+            Return _configuracionesSecciones
+
+        End Get
+
     End Property
 
 #End Region
@@ -877,7 +894,6 @@ Public Class ControladorBackend
                                 LimpiarCaracteristicasAutomaticas()
 
                                 _operacionGenerica = .ObjectReturned
-
 
                                 Dim documentoElectronico_ = _operacionGenerica.Borrador.Folder.ArchivoPrincipal.Dupla.Fuente.Clone(Activator.CreateInstance(Of T))
                                 '----Operador automático------
@@ -1605,11 +1621,14 @@ Public Class ControladorBackend
 
                     DespuesBuquedaGeneralConDatos()
 
+                    CargarConfiguraciones() 'Se queda el llamado aquí pero se debe buscar otros casos.
+
                 Else
 
                     DespuesBuquedaGeneralSinDatos()
 
                 End If
+
 
             Else
 
@@ -2598,7 +2617,6 @@ Public Class ControladorBackend
 
         End If
 
-
         Dim idCampoUnico_ As Int32 = Convert.ToInt32(caracteristica_.Campo)
 
         Dim campoUnico_ As Componentes.Campo = Nothing
@@ -2650,6 +2668,23 @@ Public Class ControladorBackend
             Case GetType(DualityBarControl)
 
                 Return FillDocumentAttributesFromGenericControl(Of DualityBarControl)(caracteristica_, campoUnico_, documentoElectronico_)
+
+        End Select
+
+        Return New TagWatcher(1)
+
+    End Function
+
+    Private Function [In](ByRef caracteristica_ As Caracteristica,
+                          ByVal configuracionNodo_ As ConfiguracionNodo) As TagWatcher
+
+        Dim idSeccionUnico_ As Int32 = Convert.ToInt32(caracteristica_.Seccion)
+
+        Select Case caracteristica_.Control.GetType()
+
+            Case GetType(FieldsetControl)
+
+                Return FillDocumentAttributesFromFieldSet(caracteristica_, idSeccionUnico_, configuracionNodo_)
 
         End Select
 
@@ -3347,6 +3382,51 @@ Public Class ControladorBackend
             End If
 
         End With
+
+        Return New TagWatcher(1)
+
+    End Function
+
+    Private Function FillDocumentAttributesFromFieldSet(ByRef caracteristica_ As Caracteristica,
+                                                        ByRef seccionUnica_ As Integer,
+                                                        ByRef configuracionNodo_ As ConfiguracionNodo) As TagWatcher
+
+        Dim seccionUnicaReferenciaLocal_ = seccionUnica_
+        Dim controlSeccion_ As FieldsetControl = DirectCast(caracteristica_.Control, FieldsetControl)
+
+        If seccionUnicaReferenciaLocal_ > 0 Then
+
+            Select Case configuracionNodo_.TipoVisibilidad
+
+                Case TiposVisibilidad.Oculto
+
+                    controlSeccion_.Visible = False
+
+                    Return New TagWatcher(1)
+
+                Case TiposVisibilidad.Visible
+
+                    controlSeccion_.Visible = True
+
+                    Return New TagWatcher(1)
+
+                Case TiposVisibilidad.Condicionado
+
+                    controlSeccion_.Visible = False
+
+                    Return New TagWatcher(1)
+
+                Case Else
+
+                    Return New TagWatcher(0, Me, "Propiedad no soportada para este control")
+
+            End Select
+
+        Else
+
+            Return New TagWatcher(0, Me, "No se encontró la sección []")
+
+        End If
 
         Return New TagWatcher(1)
 
@@ -4265,6 +4345,17 @@ Public Class ControladorBackend
 
     End Sub
 
+    Public Sub [Set](ByRef control_ As IUIControl,
+                     ByVal idUnico_ As [Enum],
+                     ByVal configuracionNodo_ As ConfiguracionNodo)
+
+        control_.WorksWith = idUnico_
+
+        Dim caracteristica_ = New Caracteristica With {.Control = control_, .Seccion = idUnico_}
+        Dim check_ As TagWatcher = [In](caracteristica_, configuracionNodo_)
+
+    End Sub
+
     Public Sub OperadorDatos(ByRef documentoElectronico_ As DocumentoElectronico,
                              ByVal tipoFlujo_ As TiposFlujo,
                              Optional ByVal modalidad_ As Modalidades = Modalidades.Auto)
@@ -4490,6 +4581,31 @@ Public Class ControladorBackend
 
     End Function
 
+    Public Overridable Function ConfiguracionVisual() As TagWatcher
+
+        Return New TagWatcher(1)
+
+    End Function
+
+    Private Sub CargarConfiguraciones()
+
+        If OperacionGenerica IsNot Nothing Then
+
+            If OperacionGenerica.Borrador.Folder.ArchivoPrincipal.Dupla.Fuente.GetType().Name IsNot Nothing Then
+
+                Dim constructor_ = Activator.CreateInstance(OperacionGenerica.Borrador.Folder.ArchivoPrincipal.Dupla.Fuente.GetType, New Object() {True, OperacionGenerica.Borrador.Folder.ArchivoPrincipal.Dupla.Fuente.Clone()})
+
+                _configuracionesSecciones = constructor_.ConfiguracionSecciones(Nothing, Nothing, Nothing)
+
+            End If
+
+        End If
+
+        ConfiguracionVisual()
+
+    End Sub
+
+
     Public Function XMLDecode(Of T)(ByVal xmlRootAttribute As String, Optional queryString As String = Nothing, Optional ByVal filePath As String = Nothing) As Object
         'dll agregadas (Organismo, iCOnexiones, SQLServerSingletonConexion)
 
@@ -4532,6 +4648,7 @@ Public Class ControladorBackend
     End Function
 
 #End Region
+
 End Class
 
 Public Class Caracteristica

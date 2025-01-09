@@ -194,13 +194,13 @@ Partial Public Class Ges022_001_Referencia
     Protected WithEvents scPrefijo As Global.Gsol.Web.Components.SelectControl
 
     '''<summary>
-    '''Control scPatente.
+    '''Control scAduanaPatente.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents scPatente As Global.Gsol.Web.Components.SelectControl
+    Protected WithEvents scAduanaPatente As Global.Gsol.Web.Components.SelectControl
 
     '''<summary>
     '''Control icPedimentoOriginal.
@@ -597,6 +597,15 @@ Partial Public Class Ges022_001_Referencia
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents icFechaRevalidacion As Global.Gsol.Web.Components.InputControl
+
+    '''<summary>
+    '''Control icFechaEntrada.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents icFechaEntrada As Global.Gsol.Web.Components.InputControl
 
     '''<summary>
     '''Control icFechaPrevio.

@@ -1,8 +1,12 @@
-﻿Imports gsol.krom
+﻿Imports ConfiguracionNodo
+Imports ConfiguracionNodo.TiposVisibilidad
+Imports gsol.krom
 Imports Syn.Documento.Componentes
 Imports Syn.Documento.Componentes.Campo.TiposDato
 Imports Syn.Nucleo.Recursos
+Imports Syn.Nucleo.Recursos.TiposBloque
 Imports Syn.Nucleo.RecursosComercioExterior
+Imports Syn.Nucleo.RecursosComercioExterior.SeccionesPedimento
 Imports Syn.Nucleo.RecursosComercioExterior.CamposPedimento
 
 Namespace Syn.Documento
@@ -13,7 +17,6 @@ Namespace Syn.Documento
         Implements ICloneable
 
 #Region "Attributes"
-
 
 #End Region
 
@@ -26,6 +29,7 @@ Namespace Syn.Documento
                         True)
 
         End Sub
+
         Sub New(ByVal construir_ As Boolean,
                 Optional ByVal documentoElectronico_ As DocumentoElectronico = Nothing)
 
@@ -34,6 +38,7 @@ Namespace Syn.Documento
                        construir_)
 
         End Sub
+
         Public Sub New(ByVal folioDocumento_ As String,
                        ByVal folioOperacion_ As String,
                        ByVal idCliente_ As Int32,
@@ -51,6 +56,7 @@ Namespace Syn.Documento
 #End Region
 
 #Region "Methods"
+
         Public Overrides Sub ConstruyeEncabezado()
 
             _estructuraDocumento(TiposBloque.Encabezado) = New List(Of Nodo)
@@ -60,11 +66,13 @@ Namespace Syn.Documento
                              tipoBloque_:=TiposBloque.Encabezado,
                              conCampos_:=True)
 
+            ConfiguracionDocumentosAsociados()
+
         End Sub
 
         Public Overrides Sub ConstruyeEncabezadoPaginasSecundarias()
 
-            _estructuraDocumento(TiposBloque.EncabezadoPaginasSecundarias) = New List(Of Nodo)
+            EstructuraDocumento(TiposBloque.EncabezadoPaginasSecundarias) = New List(Of Nodo)
 
             ' Encabezado para páginas secundarias del pedimento
             ConstruyeSeccion(seccionEnum_:=SeccionesPedimento.ANS2,
@@ -287,6 +295,44 @@ Namespace Syn.Documento
 
         End Sub
 
+        Public Sub ConfiguracionDocumentosAsociados()
+
+            DocumentosAsociados =
+                New List(Of DocumentoAsociado) _
+                From {
+                        New DocumentoAsociado With {
+                        .identificadorrecurso = "ConstructorReferencia",
+                        .idcampo = CamposReferencia.CP_REFERENCIA,
+                        .idsection = SeccionesReferencias.SREF1
+                        }
+                }
+
+        End Sub
+
+        Public Overrides Sub ConfigurarSecciones()
+
+            Item(ANS1, Encabezado, 0, Visible)
+            Item(ANS3, Cuerpo, 0, Visible)
+            Item(ANS6, Cuerpo, 0, Condicionado)
+            Item(ANS7, Cuerpo, 0, Condicionado)
+            Item(ANS9, Cuerpo, 0, Condicionado)
+            Item(ANS10, Cuerpo, 0, Visible)
+            Item(ANS11, Cuerpo, 0, Condicionado)
+            Item(ANS12, Cuerpo, 0, Condicionado)
+            Item(ANS14, Cuerpo, 0, Visible)
+            Item(ANS15, Cuerpo, 0, Condicionado)
+            Item(ANS16, Cuerpo, 0, Condicionado)
+            Item(ANS17, Cuerpo, 0, Condicionado)
+            Item(ANS18, Cuerpo, 0, Visible)
+            Item(ANS19, Cuerpo, 0, Condicionado)
+            Item(ANS20, Cuerpo, 0, Condicionado)
+            Item(ANS21, Cuerpo, 0, Condicionado)
+            Item(ANS22, Cuerpo, 0, Condicionado)
+            Item(ANS23, Cuerpo, 0, Visible)
+            Item(ANS24, Cuerpo, 0, Condicionado)
+
+        End Sub
+
 #End Region
 
 #Region "Funciones"
@@ -296,7 +342,7 @@ Namespace Syn.Documento
             Select Case idSeccion_
 
                 'Encabezado principal del pedimento
-                Case SeccionesPedimento.ANS1
+                Case ANS1
 
                     'NodoPedimento
                     Return New List(Of Nodo) From {
@@ -319,7 +365,6 @@ Namespace Syn.Documento
                                    Item(CA_CLAVE_SAD, Texto, longitud_:=3),
                                    Item(CA_MARCAS_NUMEROS_TOTAL_BULTOS, Texto), 'No tiene longitud en ConstructorCampoPedimento64
                                    Item(CA_CERTIFICACION, Texto, longitud_:=6), 'Revisar captura dice el ConstructorCampoPedimento64
-                                   Item(CA_CLAVE_SAD, Texto, longitud_:=3),
                                    Item(CA_ANIO_VALIDACION, Texto, longitud_:=4),
                                    Item(CA_ADUANA_SIN_SECCION, Texto, longitud_:=2),
                                    Item(CA_CVE_TIPO_OPERACION, Entero, longitud_:=1),
@@ -337,11 +382,12 @@ Namespace Syn.Documento
                                    Item(CA_ARCHIVO_PAGO, Texto, longitud_:=16),
                                    Item(CP_TIPO_PEDIMENTO, Entero, longitud_:=2),
                                    Item(CP_RUTA_VALIDACION, Entero, longitud_:=2),
+                                   Item(CP_TIPO_DESPACHO, Entero, longitud_:=2),
                                    Item(CP_ANIO_CURSO, Texto, longitud_:=4)
                                    }
 
                 ' Encabezado para páginas secundarias del pedimento
-                Case SeccionesPedimento.ANS2
+                Case ANS2
 
                     Return New List(Of Nodo) From {
                                Item(CA_TIPO_CAMBIO, Real, cantidadEnteros_:=4, cantidadDecimales_:=5),
@@ -353,7 +399,7 @@ Namespace Syn.Documento
                          }
 
                 ' Datos del importador/exportador
-                Case SeccionesPedimento.ANS3
+                Case ANS3
 
                     Return New List(Of Nodo) From {
                                Item(CA_RFC_IOE, Texto, longitud_:=13),
@@ -399,12 +445,12 @@ Namespace Syn.Documento
                          }
 
                 ' Datos generales del pedimento complementario
-                Case SeccionesPedimento.ANS4
+                Case ANS4
 
                     Return New List(Of Nodo)
 
                         ' Prueba suficiente - JC: Esto es otra sección, no es prueba suficiente
-                Case SeccionesPedimento.ANS5
+                Case ANS5
 
                     Return New List(Of Nodo) From {
                                Item(CA_CONCEPTO, Texto, longitud_:=7),
@@ -415,7 +461,7 @@ Namespace Syn.Documento
                          }
 
                         ' Tasas a nivel pedimento
-                Case SeccionesPedimento.ANS6
+                Case ANS6
 
                     Return New List(Of Nodo) From {
                                Item(CA_CONTRIBUCION, Texto, longitud_:=7),
@@ -427,17 +473,17 @@ Namespace Syn.Documento
                          }
 
                         ' Cuadro de liquidación
-                Case SeccionesPedimento.ANS7
+                Case ANS7
 
                     Return New List(Of Nodo) From {
                                Item(CA_EFECTIVO, Entero, longitud_:=12),
                                Item(CA_OTROS, Entero, longitud_:=12),
                                Item(CA_TOTAL, Entero, longitud_:=12),
-                               Item(SeccionesPedimento.ANS55, False)
+                               Item(ANS55, False)
                          }
 
                     'Partidas del cuadro de liquidación
-                Case SeccionesPedimento.ANS55
+                Case ANS55
 
                     Return New List(Of Nodo) From {
                                Item(CA_CONCEPTO, Texto, longitud_:=7),
@@ -451,12 +497,12 @@ Namespace Syn.Documento
                          }
 
                         ' Informe de la industria automotriz
-                Case SeccionesPedimento.ANS8
+                Case ANS8
 
                     Return New List(Of Nodo)
 
                         ' Deposito referenciado - línea de captura - información del pago
-                Case SeccionesPedimento.ANS9
+                Case ANS9
 
                     Return New List(Of Nodo) From {
                                Item(CA_DEPOSITO_REFERENCIADO, Texto), 'No tiene longitud en ConstructorCampoPedimento64
@@ -469,20 +515,18 @@ Namespace Syn.Documento
                                Item(CA_NUMERO_TRANSACCION_SAT, Texto, longitud_:=25),
                                Item(CA_MEDIO_PRESENTACION, Texto, longitud_:=23),
                                Item(CA_MEDIO_RECEPCION_COBRO, Texto, longitud_:=26),
-                               Item(CA_CLAVE_SAD, Texto, longitud_:=3),
                                Item(CA_EFECTIVO, Entero, longitud_:=12),
                                Item(CA_FECHA_PAGO, Fecha)
                          }
 
                         ' Datos del proveedor o comprador
-                Case SeccionesPedimento.ANS10
+                Case ANS10
 
                     Return New List(Of Nodo) From {
                                Item(CA_ID_FISCAL_PROVEEDOR, Texto, longitud_:=30),
                                Item(CA_NOMBRE_DENOMINACION_RAZON_SOCIAL_POC, Texto, longitud_:=120),
                                Item(CA_DOMICILIO_POC, Texto, longitud_:=190),
                                Item(CA_VINCULACION, Texto, longitud_:=2),
-                               Item(CA_CVE_VINCULACION, Entero, longitud_:=1),
                                Item(CA_CALLE_POC, Texto, longitud_:=80),
                                Item(CA_NUMERO_INTERIOR_POC, Texto, longitud_:=10),
                                Item(CA_NUMERO_EXTERIOR_POC, Texto, longitud_:=10),
@@ -490,12 +534,12 @@ Namespace Syn.Documento
                                Item(CA_MUNICIPIO_CIUDAD_POC, Texto, longitud_:=80),
                                Item(CA_ENTIDAD_FEDERATIVA_POC, Texto, longitud_:=3),
                                Item(CA_PAIS_POC, Texto, 3),
-                               Item(SeccionesPedimento.ANS13, False),
+                               Item(ANS13, False),
                                Item(CamposGlobales.CP_IDENTITY, Entero)
                          }
 
                         ' Datos del destinatario
-                Case SeccionesPedimento.ANS11
+                Case ANS11
 
                     Return New List(Of Nodo) From {
                                Item(CA_ID_FISCAL_DESTINATARIO, Texto, longitud_:=17),
@@ -510,7 +554,7 @@ Namespace Syn.Documento
                          }
 
                         ' Datos del transporte y transportista
-                Case SeccionesPedimento.ANS12
+                Case ANS12
 
                     Return New List(Of Nodo) From {
                                Item(CA_ID_TRANSPORTE, Texto, longitud_:=30),
@@ -524,7 +568,7 @@ Namespace Syn.Documento
                          }
 
                         ' CFDi o ducumento equivalente
-                Case SeccionesPedimento.ANS13
+                Case ANS13
 
                     Return New List(Of Nodo) From {
                                Item(CA_CFDI_FACTURA, Texto, longitud_:=40),
@@ -539,7 +583,7 @@ Namespace Syn.Documento
                          }
 
                         ' Fechas
-                Case SeccionesPedimento.ANS14
+                Case ANS14
 
                     Return New List(Of Nodo) From {
                                Item(CA_FECHA_ENTRADA, Fecha),
@@ -561,7 +605,7 @@ Namespace Syn.Documento
                          }
 
                         ' Candados
-                Case SeccionesPedimento.ANS15
+                Case ANS15
 
                     Return New List(Of Nodo) From {
                                Item(CA_NUMERO_CANDADO, Texto, longitud_:=21),
@@ -570,17 +614,15 @@ Namespace Syn.Documento
                          }
 
                         ' Guias, Manifiestos, conocimientos de embarque o documentos de transporte
-                Case SeccionesPedimento.ANS16
+                Case ANS16
 
                     Return New List(Of Nodo) From {
                                Item(CA_GUIA_MANIFIESTO_BL, Texto, longitud_:=20),
                                Item(CA_MASTER_HOUSE, Texto, longitud_:=1)
                          }
 
-
-
                         ' Contenedores/Equipo ferrocarril/Número economico del vehiculo
-                Case SeccionesPedimento.ANS17
+                Case ANS17
 
                     Return New List(Of Nodo) From {
                                Item(CA_NUMERO_CONTENEDOR_FERROCARRIL_NUMERO_ECONOMICO, Texto, longitud_:=12),
@@ -588,7 +630,7 @@ Namespace Syn.Documento
                          }
 
                         ' Identificadores (Nivel pedimento)
-                Case SeccionesPedimento.ANS18
+                Case ANS18
 
                     Return New List(Of Nodo) From {
                                Item(CA_CVE_IDENTIFICADOR, Texto, longitud_:=2),
@@ -597,9 +639,8 @@ Namespace Syn.Documento
                                Item(CA_COMPLEMENTO_3, Texto, longitud_:=40)
                          }
 
-
                         ' Cuentas aduaneras y cuentas aduaneras de garantia (Nivel pedimento)
-                Case SeccionesPedimento.ANS19
+                Case ANS19
 
                     Return New List(Of Nodo) From {
                                Item(CA_CVE_CUENTA_ADUANERA, Entero, longitud_:=1),
@@ -615,7 +656,7 @@ Namespace Syn.Documento
                          }
 
                         ' Descargos
-                Case SeccionesPedimento.ANS20
+                Case ANS20
 
                     Return New List(Of Nodo) From {
                                Item(CA_NUMERO_PEDIMENTO_ORIGINAL_COMPLETO, Texto, longitud_:=21),
@@ -624,7 +665,7 @@ Namespace Syn.Documento
                                Item(CA_ANIO_VALIDACION_ORIGINAL, Texto, longitud_:=4),
                                Item(CA_PATENTE_ORIGINAL, Texto, longitud_:=4),
                                Item(CA_ADUANA_DESPACHO_ORIGINAL, Texto, longitud_:=3),
-                               Item(CA_ADUANA_DESPACHO_ORIGINAL_2, Texto, longitud_:=2),
+                               Item(CA_ADUANA_DESPACHO_ORIGINAL_2, Texto, longitud_:=2),'No borrar se usa en formulas del cubo
                                Item(CA_NUMERO_PEDIMENTO_ORIGINAL_7_DIGITOS, Texto, longitud_:=7),
                                Item(CA_FRACCION_ORIGINAL, Texto, longitud_:=8),
                                Item(CA_UM_ORIGINAL, Entero, longitud_:=2),
@@ -632,7 +673,7 @@ Namespace Syn.Documento
                          }
 
                         ' Compensaciones
-                Case SeccionesPedimento.ANS21
+                Case ANS21
 
                     Return New List(Of Nodo) From {
                                Item(CA_COMPENSACION_CONTRIBUCION, Texto, longitud_:=7),
@@ -647,9 +688,8 @@ Namespace Syn.Documento
                                Item(CA_COMPENSACION_NUMERO_PEDIMENTO_ORIGINAL_7_DIGITOS, Texto, longitud_:=7)
                          }
 
-
                         ' Documentos que amparan las formas de pago distintas a efectivo
-                Case SeccionesPedimento.ANS22
+                Case ANS22
 
                     Return New List(Of Nodo) From {
                                Item(CA_PAGOS_VIRTUALES_FORMA_PAGO, Entero, 3),
@@ -662,14 +702,14 @@ Namespace Syn.Documento
                          }
 
                         ' Observaciones ( nivel pedimento)
-                Case SeccionesPedimento.ANS23
+                Case ANS23
 
                     Return New List(Of Nodo) From {
                                Item(CA_OBSERVACIONES_PEDIMENTO, Texto)
                          }
 
                         ' Partidas
-                Case SeccionesPedimento.ANS24
+                Case ANS24
 
                     Return New List(Of Nodo) From {
                                Item(CA_SECUENCIA_PARTIDA, Entero, longitud_:=5),
@@ -695,7 +735,7 @@ Namespace Syn.Documento
                                Item(CA_MODELO_PARTIDA, Texto, longitud_:=80),
                                Item(CA_CODIGO_PRODUCTO_PARTIDA, Texto, longitud_:=20),
                                Item(CA_VINCULACION, Texto, longitud_:=2),
-                               Item(CA_CVE_VINCULACION, Entero, longitud_:=1),
+                               Item(CA_CVE_VINCULACION_PARTIDA, Entero, longitud_:=1),
                                Item(CA_ENTIDAD_FEDERATIVA_ORIGEN, Texto, longitud_:=3),
                                Item(CA_ENTIDAD_FEDERATIVA_DESTINO, Texto, longitud_:=3),
                                Item(CA_ENTIDAD_FEDERATIVA_COMPRADOR, Texto, longitud_:=3),
@@ -703,21 +743,21 @@ Namespace Syn.Documento
                                Item(CP_VALOR_FACTURA_PARTIDA, Texto, longitud_:=3),
                                Item(CP_PRECIO_REFERENCIA_PARTIDA_DOF, Texto, longitud_:=3),
                                Item(CamposGlobales.CP_IDENTITY, Entero),
-                               Item(SeccionesPedimento.ANS25, True),
-                               Item(SeccionesPedimento.ANS26, True),
-                               Item(SeccionesPedimento.ANS27, True),
-                               Item(SeccionesPedimento.ANS28, True),
-                               Item(SeccionesPedimento.ANS29, True),
-                               Item(SeccionesPedimento.ANS30, True),
-                               Item(SeccionesPedimento.ANS32, True),
-                               Item(SeccionesPedimento.ANS33, True),
-                               Item(SeccionesPedimento.ANS34, True),
-                               Item(SeccionesPedimento.ANS35, True),
-                               Item(SeccionesPedimento.ANS36, True)
+                               Item(ANS25, True),
+                               Item(ANS26, True),
+                               Item(ANS27, True),
+                               Item(ANS28, True),
+                               Item(ANS29, True),
+                               Item(ANS30, True),
+                               Item(ANS32, True),
+                               Item(ANS33, True),
+                               Item(ANS34, True),
+                               Item(ANS35, True),
+                               Item(ANS36, True)
                          }
 
                         ' Mercancias
-                Case SeccionesPedimento.ANS25
+                Case ANS25
 
                     Return New List(Of Nodo) From {
                                Item(CA_VINCULACION_NUMERO_SERIE_PARTIDA, Texto, longitud_:=25),
@@ -725,7 +765,7 @@ Namespace Syn.Documento
                          }
 
                         ' Regulaciones y restricciones no arancelarias (Nivel Partida)
-                Case SeccionesPedimento.ANS26
+                Case ANS26
 
                     Return New List(Of Nodo) From {
                                Item(CA_CVE_PERMISO, Texto, longitud_:=3),
@@ -736,7 +776,7 @@ Namespace Syn.Documento
                          }
 
                         ' Identificadores ( Nivel partida )
-                Case SeccionesPedimento.ANS27
+                Case ANS27
 
                     Return New List(Of Nodo) From {
                                Item(CA_CVE_IDENTIFICADOR_PARTIDA, Texto, longitud_:=2),
@@ -746,7 +786,7 @@ Namespace Syn.Documento
                          }
 
                         ' Cuentas aduaneras de garantia ( Nivel partida)
-                Case SeccionesPedimento.ANS28
+                Case ANS28
 
                     Return New List(Of Nodo) From {
                                Item(CA_CVE_TIPO_GARANTIA_PARTIDA, Entero, longitud_:=2),
@@ -760,7 +800,7 @@ Namespace Syn.Documento
                          }
 
                         ' Tasas y contribuciones a nivel partida
-                Case SeccionesPedimento.ANS29
+                Case ANS29
 
                     Return New List(Of Nodo) From {
                                Item(CA_CVE_CONTRIBUCION_PARTIDA, Texto, longitud_:=7),
@@ -770,7 +810,7 @@ Namespace Syn.Documento
                          }
 
                         ' Contribuciones a nivel partida
-                Case SeccionesPedimento.ANS30
+                Case ANS30
 
                     Return New List(Of Nodo) From {
                                Item(CA_CVE_CONTRIBUCION_PARTIDA, Texto, longitud_:=7),
@@ -780,12 +820,12 @@ Namespace Syn.Documento
                         }
 
                         ' Partidas del informe de la industria automotriz
-                Case SeccionesPedimento.ANS31
+                Case ANS31
 
                     Return New List(Of Nodo)
 
                         ' Determinación de contribuciones a nivel partida al amparo del Art 2.5 del T-MEC
-                Case SeccionesPedimento.ANS32
+                Case ANS32
 
                     Return New List(Of Nodo) From {
                                Item(CA_MONTO_MERCANCIAS_NO_ORIGINARIAS_PARTIDA, Entero, longitud_:=12),
@@ -793,7 +833,7 @@ Namespace Syn.Documento
                          }
 
                         ' Detalle de importación a EUA/CAN al amparo del Art. 2.5 del T-MEC
-                Case SeccionesPedimento.ANS33
+                Case ANS33
 
                     Return New List(Of Nodo) From {
                                Item(CA_SECUENCIA_PARTIDA, Entero, longitud_:=5),
@@ -803,7 +843,7 @@ Namespace Syn.Documento
                          }
 
                         ' Determinación y/o pago de contribuciones por aplicación del art 2.5 del TMEC en el pedimento de exporación(Retorno)
-                Case SeccionesPedimento.ANS34
+                Case ANS34
 
                     Return New List(Of Nodo) From {
                                Item(CA_SECUENCIA_PARTIDA, Entero, longitud_:=5),
@@ -814,7 +854,7 @@ Namespace Syn.Documento
                          }
 
                         ' Pago de contribuciones a nivel partida por aplicación del Art. 2.5 del T-MEC
-                Case SeccionesPedimento.ANS35
+                Case ANS35
 
                     Return New List(Of Nodo) From {
                                 Item(CA_SECUENCIA_PARTIDA, Entero, longitud_:=5),
@@ -827,14 +867,14 @@ Namespace Syn.Documento
                         }
 
                          ' Observaciones ( Nivel partida )
-                Case SeccionesPedimento.ANS36
+                Case ANS36
 
                     Return New List(Of Nodo) From {
                                Item(CA_OBSERVACIONES_PARTIDA, Texto) 'No tiene longitud en ConstructorCampoPedimento64
                          }
 
                         ' Rectificaciones
-                Case SeccionesPedimento.ANS37
+                Case ANS37
 
                     Return New List(Of Nodo) From {
                                Item(CA_RECTIFICACION_FECHA_PEDIMENTO_ORIGINAL, Fecha),
@@ -849,7 +889,7 @@ Namespace Syn.Documento
                     }
 
                         ' Diferencias de contribuciones ( Nivel pedimento )
-                Case SeccionesPedimento.ANS38
+                Case ANS38
 
                     Return New List(Of Nodo) From {
                                Item(CA_DIFERENCIA, Entero, longitud_:=7),
@@ -865,7 +905,7 @@ Namespace Syn.Documento
                     }
 
                         ' Prueba suficiente
-                Case SeccionesPedimento.ANS39
+                Case ANS39
 
                     Return New List(Of Nodo) From {
                                Item(CA_CVE_PAIS_EXPORTACION, Entero, longitud_:=7),
@@ -874,22 +914,22 @@ Namespace Syn.Documento
                     }
 
                         ' Encabezado para determinacion de contribuciones a nivel partdida para pedimentos complementarios al amparo del art. T-Mec
-                Case SeccionesPedimento.ANS40
+                Case ANS40
 
                     Return New List(Of Nodo)
 
                         ' Encabezado para determinación de contribuciones a nivel partida para pedimentos complementarios al amparo del los articulos 14 de la decision o 15 del TLCAELC
-                Case SeccionesPedimento.ANS41
+                Case ANS41
 
                     Return New List(Of Nodo)
 
                         ' Instructivo de llenado del pedimento de tránsito para el transbordo
-                Case SeccionesPedimento.ANS42
+                Case ANS42
 
                     Return New List(Of Nodo)
 
                         ' Fin de pedimento
-                Case SeccionesPedimento.ANS43
+                Case ANS43
 
                     Return New List(Of Nodo) From {
                                Item(CA_FIN_PEDIMENTO, Texto, longitud_:=17),
@@ -898,7 +938,7 @@ Namespace Syn.Documento
                          }
 
                         ' Pie de pagina del pedimento
-                Case SeccionesPedimento.ANS44
+                Case ANS44
 
                     Return New List(Of Nodo) From {
                                Item(CA_NOMBRE_DENOMINACION_RAZON_SOCIAL_AA, Texto, longitud_:=120),
@@ -919,13 +959,11 @@ Namespace Syn.Documento
 
             End Select
 
-
             Return Nothing
 
         End Function
 
 #End Region
-
 
     End Class
 

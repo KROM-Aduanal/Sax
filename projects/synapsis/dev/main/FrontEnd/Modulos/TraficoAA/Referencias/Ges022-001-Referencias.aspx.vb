@@ -3,6 +3,8 @@
 
 'RECURSOS DEL CMF
 Imports System.IO
+Imports System.Net
+Imports System.ServiceModel.Channels
 Imports gsol
 Imports gsol.krom
 Imports gsol.Web.Components
@@ -155,9 +157,16 @@ Public Class Ges022_001_Referencia
 
     End Sub
 
+    Public Overrides Sub BotoneraClicPublicar()
+
+
+    End Sub
+
     Public Overrides Sub BotoneraClicEditar()
 
         InicializaPrefijo()
+
+        PreparaBotonera(FormControl.ButtonbarModality.Draft)
 
         ccDocumento.Visible = False
 
@@ -189,6 +198,8 @@ Public Class Ges022_001_Referencia
 
             icFechaRevalidacion.Visible = True
 
+            icFechaEntrada.Visible = True
+
         Else
 
             fscGuia.Visible = False
@@ -204,6 +215,8 @@ Public Class Ges022_001_Referencia
             icFechaEta.Visible = False
 
             icFechaRevalidacion.Visible = False
+
+            icFechaEntrada.Visible = False
 
         End If
 
@@ -246,15 +259,30 @@ Public Class Ges022_001_Referencia
 
         Dim bloqueadosEdicion_ As New List(Of WebControl)
 
-        'Aquí debemos validar que se tenga publicada y ya bloquearle los campos que se definan. ¿Cómo se vera un documento electronico publiscado?
+        If OperacionGenerica IsNot Nothing Then
+
+            If OperacionGenerica.Publicado = True And OperacionGenerica.FirmaElectronica IsNot Nothing Then
+
+                bloqueadosEdicion_.Add(swcTipoOperacion)
+                bloqueadosEdicion_.Add(scTipoDocumento)
+                bloqueadosEdicion_.Add(scEjecutivoCuenta)
+                bloqueadosEdicion_.Add(scAduanaPatente)
+                bloqueadosEdicion_.Add(icPedimentoOriginal)
+                bloqueadosEdicion_.Add(scTipoDespacho)
+                bloqueadosEdicion_.Add(scClaveDocumento)
+                bloqueadosEdicion_.Add(scRegimen)
+                bloqueadosEdicion_.Add(dbcReferencia)
+                bloqueadosEdicion_.Add(fbcCliente)
+
+            End If
+
+        End If
 
         'bloqueadosEdicion_.Add(swcTipoOperacion)
-        'bloqueadosEdicion_.Add(swcRectificacion)
         'bloqueadosEdicion_.Add(scTipoDocumento)
         'bloqueadosEdicion_.Add(scEjecutivoCuenta)
-        'bloqueadosEdicion_.Add(scPatente)
+        'bloqueadosEdicion_.Add(scAduanaPatente)
         'bloqueadosEdicion_.Add(icPedimentoOriginal)
-        'bloqueadosEdicion_.Add(scTipoCarga)
         'bloqueadosEdicion_.Add(scTipoDespacho)
         'bloqueadosEdicion_.Add(scClaveDocumento)
         'bloqueadosEdicion_.Add(scRegimen)
@@ -262,6 +290,8 @@ Public Class Ges022_001_Referencia
         'bloqueadosEdicion_.Add(fbcCliente)
         'bloqueadosEdicion_.Add(icBancoPago)
         'bloqueadosEdicion_.Add(swcMaterialPeligroso)
+        'bloqueadosEdicion_.Add(swcRectificacion)
+        'bloqueadosEdicion_.Add(scTipoCarga)
 
         Return bloqueadosEdicion_
 
@@ -271,6 +301,15 @@ Public Class Ges022_001_Referencia
     Public Overrides Function Configuracion() As TagWatcher
 
         Dim tipoOp_ As Int32 = IIf(swcTipoOperacion.Checked, ControladorRecursosAduanales.TiposOperacionAduanal.Importacion, ControladorRecursosAduanales.TiposOperacionAduanal.Exportacion)
+        Dim numeroCliente_ As Int32 = 0
+        Dim razonSocialCliente_ As String = ""
+
+        If fbcCliente.Text <> "" Then
+
+            numeroCliente_ = CInt(Mid(fbcCliente.Text, fbcCliente.Text.IndexOf("|") + 3, fbcCliente.Text.Length))
+            razonSocialCliente_ = Mid(fbcCliente.Text, 1, fbcCliente.Text.IndexOf("|") - 1)
+
+        End If
 
         [Set](dbcReferencia, CP_REFERENCIA, propiedadDelControl_:=PropiedadesControl.Valor)
         [Set](dbcReferencia, CamposPedimento.CA_NUMERO_PEDIMENTO_COMPLETO, propiedadDelControl_:=PropiedadesControl.ValueDetail)
@@ -278,9 +317,9 @@ Public Class Ges022_001_Referencia
         [Set](tipoOp_, CamposPedimento.CA_TIPO_OPERACION, tipoDato_:=Campo.TiposDato.Entero)
         [Set](swcMaterialPeligroso, CP_MATERIAL_PELIGROSO, propiedadDelControl_:=PropiedadesControl.Checked)
         [Set](swcRectificacion, CP_RECTIFICACION, propiedadDelControl_:=PropiedadesControl.Checked)
-        [Set](scPatente, CamposPedimento.CP_MODALIDAD_ADUANA_PATENTE)
+        [Set](scAduanaPatente, CamposPedimento.CP_MODALIDAD_ADUANA_PATENTE)
         [Set](scRegimen, CamposPedimento.CA_REGIMEN)
-        [Set](scTipoDocumento, CA_TIPO_PEDIMENTO)
+        [Set](scTipoDocumento, CP_TIPO_PEDIMENTO)
         [Set](scClaveDocumento, CamposPedimento.CA_CVE_PEDIMENTO)
         [Set](scEjecutivoCuenta, CamposPedimento.CP_EJECUTIVO_CUENTA)
         [Set](scTipoCarga, CP_TIPO_CARGA_AGENCIA)
@@ -289,7 +328,10 @@ Public Class Ges022_001_Referencia
         [Set](icPedimentoOriginal, CP_PEDIMENTO_ORIGINAL)
 
         [Set](fbcCliente, CamposClientes.CP_OBJECTID_CLIENTE)
-        [Set](fbcCliente, CamposClientes.CA_RAZON_SOCIAL, propiedadDelControl_:=PropiedadesControl.Text)
+        [Set](numeroCliente_, CamposClientes.CP_CVE_CLIENTE, tipoDato_:=Campo.TiposDato.Entero)
+        '[Set](razonSocialCliente_, CamposClientes.CA_RAZON_SOCIAL)
+        [Set](fbcCliente, CamposClientes.CA_RAZON_SOCIAL)
+        [Set](fbcCliente, CamposClientes.CA_RAZON_SOCIAL, propiedadDelControl_:=PropiedadesControl.Text, asignarA_:=TiposAsignacion.ValorPresentacion)
         [Set](icRFC, CamposClientes.CA_RFC_CLIENTE)
         [Set](icRFCFacturacion, CamposClientes.CP_RFC_FACTURACION)
         [Set](icBancoPago, CamposClientes.CP_CVE_BANCO)
@@ -297,7 +339,7 @@ Public Class Ges022_001_Referencia
         [Set](icFechaEta, CP_FECHA_ETA, propiedadDelControl_:=PropiedadesControl.Valor)
         [Set](icFechaRevalidacion, CP_FECHA_REVALIDACION, propiedadDelControl_:=PropiedadesControl.Valor)
         [Set](icFechaPrevio, CP_FECHA_PREVIO, propiedadDelControl_:=PropiedadesControl.Valor)
-        [Set](icFechaPrevio, CP_FECHA_PREVIO, propiedadDelControl_:=PropiedadesControl.Valor)
+        [Set](icFechaEntrada, CamposPedimento.CA_FECHA_ENTRADA, propiedadDelControl_:=PropiedadesControl.Valor) 'Revisr si se deja este o se pone un campo para referencia
         [Set](icFechaPresentacion, CP_FECHA_PRESENTACION, propiedadDelControl_:=PropiedadesControl.Valor)
         [Set](icFechaSalida, CP_FECHA_SALIDA, propiedadDelControl_:=PropiedadesControl.Valor)
         [Set](icFechaEtd, CP_FECHA_ETD, propiedadDelControl_:=PropiedadesControl.Valor)
@@ -349,21 +391,47 @@ Public Class Ges022_001_Referencia
     'EVENTOS PARA LA INSERCIÓN DE DATOS
     Public Overrides Function AntesRealizarInsercion(ByVal session_ As IClientSessionHandle) As TagWatcher
 
-        Dim modalidadSeccionPatente_ As ControladorRecursosAduanales = GetVars("_modalidadSeccionPatente")
+        Dim seccionPatente_ As ControladorRecursosAduanales = GetVars("_seccionPatente")
 
-        Dim seccionesPatente_ = From data In modalidadSeccionPatente_.aduanaspatentes
-                                Where data._idmodalidadaduanapatente.ToString.Equals(scPatente.Value)
-                                Select data._idaduanaseccion, data._idpatente
+        Dim seccionesPatente_ = From data In seccionPatente_.aduanaspatentes
+                                Where data._idmodalidadaduanapatente.ToString.Equals(scAduanaPatente.Value)
+                                Select data._idaduanaseccion, data._idpatente, data.modalidad, data.agenteaduanal
 
         If seccionesPatente_.Count > 0 Then
 
-            Dim seccion_ As String = seccionesPatente_(0)._idaduanaseccion.ToString
+            Dim seccion_ = seccionesPatente_(0)._idaduanaseccion.ToString
 
             Dim patente_ = seccionesPatente_(0)._idpatente.ToString
 
-            [Set](seccion_, CamposPedimento.CA_ADUANA_ENTRADA_SALIDA)
+            Dim patentePresentacion_ = seccionesPatente_(0)._idpatente.ToString & " - " & seccionesPatente_(0).agenteaduanal
 
-            [Set](patente_, CamposPedimento.CA_PATENTE,)
+            Dim modalidad_ = seccionesPatente_(0).modalidad.ToString
+
+            Select Case modalidad_
+
+                Case "Maritimo"
+
+                    modalidad_ = TiposModalidad.Maritimo
+
+                Case "Aereo"
+
+                    modalidad_ = TiposModalidad.Aereo
+
+                Case "Terrestre"
+
+                    modalidad_ = TiposModalidad.Terrestre
+
+                Case Else
+
+            End Select
+
+            [Set](seccion_, CamposPedimento.CA_CLAVE_SAD)
+
+            [Set](patente_, CamposPedimento.CA_PATENTE)
+
+            [Set](patentePresentacion_, CamposPedimento.CA_PATENTE, tipoAsignacion_:=TiposAsignacion.ValorPresentacion)
+
+            [Set](modalidad_, CamposPedimento.CP_MODALIDAD)
 
         End If
 
@@ -393,6 +461,8 @@ Public Class Ges022_001_Referencia
 
     Public Overrides Function DespuesRealizarInsercion() As TagWatcher
 
+        __SYSTEM_MODULE_FORM.Modality = FormControl.ButtonbarModality.Draft
+
         Return New TagWatcher(1)
 
     End Function
@@ -400,13 +470,13 @@ Public Class Ges022_001_Referencia
     'EVENTOS PARA MODIFICACIÓN DE DATOS
     Public Overrides Function AntesRealizarModificacion(ByVal session_ As IClientSessionHandle) As TagWatcher
 
-        Dim modalidadSeccionPatente_ As ControladorRecursosAduanales = GetVars("_modalidadSeccionPatente")
+        Dim modalidadSeccionPatente_ As ControladorRecursosAduanales = GetVars("_seccionPatente")
 
         If modalidadSeccionPatente_ IsNot Nothing Then
 
             Dim seccionesPatente_ = From data In modalidadSeccionPatente_.aduanaspatentes
-                                    Where data._idmodalidadaduanapatente.ToString.Equals(scPatente.Value)
-                                    Select data._idaduanaseccion, data._idpatente
+                                    Where data._idmodalidadaduanapatente.ToString.Equals(scAduanaPatente.Value)
+                                    Select data._idaduanaseccion, data._idpatente, data.modalidad, data.agenteaduanal
 
             If seccionesPatente_.Count > 0 Then
 
@@ -414,9 +484,35 @@ Public Class Ges022_001_Referencia
 
                 Dim patente_ = seccionesPatente_(0)._idpatente.ToString
 
-                [Set](seccion_, CamposPedimento.CA_ADUANA_ENTRADA_SALIDA)
+                Dim patentePresentacion_ = seccionesPatente_(0)._idpatente.ToString & " - " & seccionesPatente_(0).agenteaduanal
 
-                [Set](patente_, CamposPedimento.CA_PATENTE,)
+                Dim modalidad_ = seccionesPatente_(0).modalidad.ToString
+
+                Select Case modalidad_
+
+                    Case "Maritimo"
+
+                        modalidad_ = TiposModalidad.Maritimo
+
+                    Case "Aereo"
+
+                        modalidad_ = TiposModalidad.Aereo
+
+                    Case "Terrestre"
+
+                        modalidad_ = TiposModalidad.Terrestre
+
+                    Case Else
+
+                End Select
+
+                [Set](seccion_, CamposPedimento.CA_CLAVE_SAD)
+
+                [Set](patente_, CamposPedimento.CA_PATENTE)
+
+                [Set](patentePresentacion_, CamposPedimento.CA_PATENTE, tipoAsignacion_:=TiposAsignacion.ValorPresentacion)
+
+                [Set](modalidad_, CamposPedimento.CP_MODALIDAD)
 
             End If
 
@@ -441,6 +537,12 @@ Public Class Ges022_001_Referencia
     End Sub
 
     Public Overrides Function DespuesRealizarModificacion() As TagWatcher
+
+        If OperacionGenerica.Publicado = True And OperacionGenerica.FirmaElectronica IsNot Nothing Then
+
+            PreparaBotonera(FormControl.ButtonbarModality.Protected) 'Para publicado :D
+
+        End If
 
         Return New TagWatcher(1)
 
@@ -492,11 +594,24 @@ Public Class Ges022_001_Referencia
 
     Public Overrides Sub DespuesBuquedaGeneralConDatos()
 
+        If OperacionGenerica.Publicado = True And OperacionGenerica.FirmaElectronica IsNot Nothing Then
+
+            PreparaBotonera(FormControl.ButtonbarModality.Closed) 'Para publicado :D pero en este caso no se pondra así porque se dejaran campos para editar
+
+        End If
+
+        If OperacionGenerica.Publicado = True And OperacionGenerica.FirmaElectronica IsNot Nothing And dbcReferencia.ValueDetail <> "" Then
+
+            dbcReferencia.EnabledButton = False
+            PreparaBotonera(FormControl.ButtonbarModality.Closed)
+
+        End If
+
         Dim swMultiple = OperacionGenerica.Borrador.Folder.ArchivoPrincipal.Dupla.Fuente.Attribute(CP_GUIA_MULTIPLE).Valor
 
         Dim swTipoOp_ = OperacionGenerica.Borrador.Folder.ArchivoPrincipal.Dupla.Fuente.Attribute(CamposPedimento.CA_TIPO_OPERACION).Valor
 
-        Dim tipoPedimento = OperacionGenerica.Borrador.Folder.ArchivoPrincipal.Dupla.Fuente.Attribute(CA_TIPO_PEDIMENTO).Valor
+        Dim tipoPedimento = OperacionGenerica.Borrador.Folder.ArchivoPrincipal.Dupla.Fuente.Attribute(CP_TIPO_PEDIMENTO).Valor
 
         If swTipoOp_ = 1 Then
 
@@ -560,6 +675,8 @@ Public Class Ges022_001_Referencia
 
             icFechaRevalidacion.Visible = True
 
+            icFechaEntrada.Visible = True
+
         Else
 
             fscGuia.Visible = False
@@ -575,6 +692,8 @@ Public Class Ges022_001_Referencia
             icFechaEta.Visible = False
 
             icFechaRevalidacion.Visible = False
+
+            icFechaEntrada.Visible = False
 
         End If
 
@@ -595,7 +714,7 @@ Public Class Ges022_001_Referencia
     'EVENTOS DE MANTENIMIENTO
     Public Overrides Sub LimpiaSesion()
 
-        SetVars("_modalidadSeccionPatente", Nothing)
+        SetVars("_seccionPatente", Nothing)
 
     End Sub
 
@@ -692,11 +811,11 @@ Public Class Ges022_001_Referencia
                 scClaveDocumento.ToolTipModality = Web.Components.IUIControl.ToolTipModalities.Ondemand
                 scClaveDocumento.ToolTipStatus = Web.Components.IUIControl.ToolTipTypeStatus.OkInfo
 
-                scPatente.DataSource = New List(Of SelectOption) From {New SelectOption With {.Value = 1, .Text = "Marítimo | Veracruz 430 | Jesús Gómez Reyes 3945"}}
-                scPatente.Value = 1
-                scPatente.ToolTip = "Sugerido por sistema, confirmar"
-                scPatente.ToolTipModality = Web.Components.IUIControl.ToolTipModalities.Ondemand
-                scPatente.ToolTipStatus = Web.Components.IUIControl.ToolTipTypeStatus.OkInfo
+                scAduanaPatente.DataSource = New List(Of SelectOption) From {New SelectOption With {.Value = 1, .Text = "Marítimo | Veracruz 430 | Jesús Gómez Reyes 3945"}}
+                scAduanaPatente.Value = 1
+                scAduanaPatente.ToolTip = "Sugerido por sistema, confirmar"
+                scAduanaPatente.ToolTipModality = Web.Components.IUIControl.ToolTipModalities.Ondemand
+                scAduanaPatente.ToolTipStatus = Web.Components.IUIControl.ToolTipTypeStatus.OkInfo
 
                 scTipoDocumento.DataSource = New List(Of SelectOption) From {New SelectOption With {.Value = 1, .Text = "Normal"}}
                 scTipoDocumento.Value = 1
@@ -720,7 +839,7 @@ Public Class Ges022_001_Referencia
 
         scRegimen.ShowToolTip()
         scClaveDocumento.ShowToolTip()
-        scPatente.ShowToolTip()
+        scAduanaPatente.ShowToolTip()
         scTipoDocumento.ShowToolTip()
         scTipoGuia.ShowToolTip()
         scEjecutivoCuenta.ShowToolTip()
@@ -776,6 +895,7 @@ Public Class Ges022_001_Referencia
             icFechaCierreFisico.Visible = False
             icFechaEta.Visible = True
             icFechaRevalidacion.Visible = True
+            icFechaEntrada.Visible = True
 
         Else
 
@@ -786,6 +906,7 @@ Public Class Ges022_001_Referencia
             icFechaCierreFisico.Visible = True
             icFechaEta.Visible = False
             icFechaRevalidacion.Visible = False
+            icFechaEntrada.Visible = False
 
         End If
 
@@ -891,12 +1012,50 @@ Public Class Ges022_001_Referencia
 
     Protected Sub dbcReferencia_Click(sender As Object, e As EventArgs)
 
-        If dbcReferencia.ValueDetail = "" Then 'And GetVars("IsEditing") Then
+        'Validación
+        'If OperacionGenerica.Publicado = True And OperacionGenerica.FirmaElectronica IsNot Nothing And dbcReferencia.ValueDetail = "" Then
 
-            dbcReferencia.ValueDetail = Mid(Year(Now).ToString, 4, 1) &
-                GeneraSecuencia("Pedimentos", Statements.GetOfficeOnline._id, Year(Now), 0, 3210, 430).ToString.PadLeft(6, "0").ToString
+        '    Dim controlador_ As IControladorPedimentos = New ControladorPedimentos()
 
-        End If
+        '    Dim listita_ As New List(Of ObjectId) From {
+        '    OperacionGenerica.Id
+        '    }
+
+        '    controlador_.CrearPedimentosAsync(listita_)
+
+        '    If controlador_.Estatus.Status = Ok Then
+
+        '        If controlador_.Estatus.ObjectReturned IsNot Nothing Then
+
+        '            Dim pedimentos_ As List(Of DocumentoElectronico) = controlador_.Pedimentos
+
+        '            If pedimentos_.Count = 1 Then
+
+        '                Dim pedimento_ As DocumentoElectronico = pedimentos_(0)
+
+        '                dbcReferencia.ValueDetail = pedimento_.FolioOperacion
+
+        '                DisplayMessage("Se ha creado exitosamente su pedimento.")
+
+        '            Else
+
+        '                'No implementado
+
+        '            End If
+
+        '        End If
+
+        '    Else
+
+        '        DisplayMessage(controlador_.Estatus.ErrorDescription)
+
+        '    End If
+
+        'Else
+
+        '    DisplayMessage("No se ha publicado la referencia", StatusMessage.Fail)
+
+        'End If
 
     End Sub
 
@@ -1281,9 +1440,10 @@ Public Class Ges022_001_Referencia
 
     End Sub
 
-    Protected Sub scModalidadAduanaPatente_Click(sender As Object, e As EventArgs)
 
-        scPatente.DataSource = ModalidadSeccionPatente()
+    Protected Sub scAduanaPatente_Click(sender As Object, e As EventArgs)
+
+        scAduanaPatente.DataSource = SeccionPatente()
 
     End Sub
 
@@ -1452,17 +1612,17 @@ Public Class Ges022_001_Referencia
 
         If aduanasSecciones_.Count > 0 Then
 
-            Dim aduanaSeccionModalidad_ As New List(Of SelectOption)
+            Dim aduanaSeccion_ As New List(Of SelectOption)
 
             For index_ As Int32 = 0 To aduanasSecciones_.Count - 1
 
-                aduanaSeccionModalidad_.Add(New SelectOption With
+                aduanaSeccion_.Add(New SelectOption With
                              {.Value = aduanasSecciones_(index_)._idaduanaseccion,
-                              .Text = aduanasSecciones_(index_).modalidad.ToString & " | " & aduanasSecciones_(index_)._idaduanaseccion & " | " & aduanasSecciones_(index_).ciudad.ToString})
+                              .Text = aduanasSecciones_(index_)._idaduanaseccion & " | " & aduanasSecciones_(index_).ciudad.ToString})
 
             Next
 
-            Return aduanaSeccionModalidad_
+            Return aduanaSeccion_
 
         End If
 
@@ -1544,36 +1704,37 @@ Public Class Ges022_001_Referencia
 
     End Sub
 
-    Private Function ModalidadSeccionPatente() As List(Of SelectOption)
+    Private Function SeccionPatente() As List(Of SelectOption)
 
-        Dim _modalidadSeccionPatente = ControladorRecursosAduanales.BuscarRecursosAduanales(ControladorRecursosAduanales.TiposRecurso.Generales)
+        Dim _SeccionPatente = ControladorRecursosAduanales.BuscarRecursosAduanales(ControladorRecursosAduanales.TiposRecurso.Generales)
 
-        SetVars("_modalidadSeccionPatente", _modalidadSeccionPatente)
+        SetVars("_seccionPatente", _SeccionPatente)
 
-        Dim aduanasSeccionesPatente_ = From data In _modalidadSeccionPatente.aduanaspatentes
+        Dim aduanasSeccionesPatente_ = From data In _SeccionPatente.aduanaspatentes
                                        Where data.archivado = False And data.estado = 1
                                        Select data._idmodalidadaduanapatente, data.modalidad, data.ciudad, data._idaduanaseccion, data.agenteaduanal, data._idpatente
 
         If aduanasSeccionesPatente_.Count > 0 Then
 
-            Dim modalidadesAdunaSeccionPatente_ As New List(Of SelectOption)
+            Dim adunaSeccionPatente_ As New List(Of SelectOption)
 
             For index_ As Int32 = 0 To aduanasSeccionesPatente_.Count - 1
 
-                modalidadesAdunaSeccionPatente_.Add(New SelectOption With
+                adunaSeccionPatente_.Add(New SelectOption With
                              {.Value = aduanasSeccionesPatente_(index_)._idmodalidadaduanapatente,
-                              .Text = aduanasSeccionesPatente_(index_).modalidad & " | " & aduanasSeccionesPatente_(index_)._idaduanaseccion & " - " & aduanasSeccionesPatente_(index_).ciudad &
+                              .Text = aduanasSeccionesPatente_(index_)._idaduanaseccion & " - " & aduanasSeccionesPatente_(index_).ciudad &
                               " | " & aduanasSeccionesPatente_(index_)._idpatente & " - " & aduanasSeccionesPatente_(index_).agenteaduanal})
 
             Next
 
-            Return modalidadesAdunaSeccionPatente_
+            Return adunaSeccionPatente_
 
         End If
 
         Return Nothing
 
     End Function
+
 
 #End Region
 

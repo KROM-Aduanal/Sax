@@ -1,7 +1,6 @@
 ﻿Imports MongoDB.Bson
 Imports MongoDB.Bson.Serialization.Attributes
 
-
 Namespace Syn.Documento.Componentes
 
     <BsonKnownTypes(GetType(DecoradorSeccion))>
@@ -42,14 +41,17 @@ Namespace Syn.Documento.Componentes
         <BsonElement("Nombre")>
         Public Property Nombre As String
 
+        <BsonIgnoreIfNull>
         <BsonElement("Orden")>
-        Public Property Orden As Integer
+        Public Property Orden As Integer?
 
+        <BsonIgnoreIfNull>
         <BsonElement("VisibleCaptura")>
-        Public Property VisibleCaptura As Boolean
+        Public Property VisibleCaptura As Boolean?
 
+        <BsonIgnoreIfNull>
         <BsonElement("VisibleImpresion")>
-        Public Property VisibleImpresion As Boolean
+        Public Property VisibleImpresion As Boolean?
 
         <BsonIgnore>
         Public ReadOnly Property CantidadPartidas As Integer
@@ -64,7 +66,5 @@ Namespace Syn.Documento.Componentes
     End Class
 
 #End Region
-
-
 
 End Namespace

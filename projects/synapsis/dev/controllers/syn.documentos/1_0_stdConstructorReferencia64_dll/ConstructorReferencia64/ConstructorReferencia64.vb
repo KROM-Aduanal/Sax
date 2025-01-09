@@ -187,7 +187,7 @@ Namespace Syn.Documento
                                             Item(CamposPedimento.CP_MODALIDAD_ADUANA_PATENTE, Entero, longitud_:=3),
                                             Item(CamposPedimento.CA_ADUANA_ENTRADA_SALIDA, Texto, longitud_:=3),
                                             Item(CamposPedimento.CA_PATENTE, Texto, longitud_:=4),
-                                            Item(CamposReferencia.CA_TIPO_PEDIMENTO, Texto, longitud_:=100),
+                                            Item(CamposPedimento.CP_TIPO_PEDIMENTO, Texto, longitud_:=100),
                                             Item(CamposReferencia.CP_DESADUANAMIENTO, Entero, longitud_:=5),
                                             Item(CamposPedimento.CP_EJECUTIVO_CUENTA, Entero, longitud_:=5),
                                             Item(CamposReferencia.CP_DESCRIPCION_MERCANCIA_COMPLETA, Texto, longitud_:=150),
@@ -201,7 +201,7 @@ Namespace Syn.Documento
 
                     Return New List(Of Nodo) From {
                                              Item(CamposClientes.CP_OBJECTID_CLIENTE, IdObject),
-                                             Item(CamposClientes.CA_RAZON_SOCIAL, Texto, longitud_:=120, useAsMetadata_:=True),
+                                             Item(CamposClientes.CA_RAZON_SOCIAL, Texto, longitud_:=120, 0, useAsMetadata_:=True),
                                              Item(CamposClientes.CA_RFC_CLIENTE, Texto, longitud_:=13),
                                              Item(CamposClientes.CP_RFC_FACTURACION, Texto, longitud_:=13),
                                              Item(CamposClientes.CP_CVE_BANCO, Texto, longitud_:=200)

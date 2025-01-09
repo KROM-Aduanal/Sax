@@ -500,7 +500,7 @@ Namespace Syn.Nucleo
             <EnumMember> <Description("CLAVE CONCEPTO NIVEL PEDIMENTO")> CA_CVE_CONCEPTO_NIVEL_PEDIMENTO = 245
             <EnumMember> <Description("CLAVE CONTRIBUCION A NIVEL PARTIDA")> CA_CVE_CONTRIBUCION_NIVEL_PARTIDA = 246
             <EnumMember> <Description("NUMERO DE ACUSE DE VALOR")> CA_NUMERO_ACUSE_DE_VALOR = 247
-            <EnumMember> <Description("CLAVE VINCULACION")> CA_CVE_VINCULACION = 249
+            <EnumMember> <Description("PARTIDAS - CLAVE VINCULACION")> CA_CVE_VINCULACION_PARTIDA = 249
             <EnumMember> <Description("NUMERO DE PEDIMENTO ORIGINAL 7 DIGITOS")> CA_NUMERO_PEDIMENTO_ORIGINAL_7_DIGITOS = 252
             <EnumMember> <Description("SIN USAR 4")> CA_SIN_USAR4 = 253
             <EnumMember> <Description("ANIO VALIDACION ORIGINAL")> CA_ANIO_VALIDACION_ORIGINAL = 254
@@ -547,7 +547,6 @@ Namespace Syn.Nucleo
             <EnumMember> <Description("COMPENSACIONES - ADUANA DESPACHO ORIGINAL 2 DIGITOS")> CA_COMPENSACION_ADUANA_DESPACHO_ORIGINAL_2 = 292
             <EnumMember> <Description("COMPENSACIONES - NUMERO DE PEDIMENTO ORIGINAL 7 DIGITOS")> CA_COMPENSACION_NUMERO_PEDIMENTO_ORIGINAL_7_DIGITOS = 293
             <EnumMember> <Description("PRUEBA SUFICIENTE - PAIS DESTINO.")> CA_PRUEBA_SUFICIENTE_CVE_PAIS_EXPORTACION = 294
-            <EnumMember> <Description("PARTIDAS - VINCULACION.")> CA_CVE_VINCULACION_PARTIDA = 295
 
             '#############################  CAMPOS ÚNICOS DE LA AUTORIDAD ##################################
 
@@ -706,7 +705,7 @@ Namespace Syn.Nucleo
             <EnumMember> <Description("REFERENCIA")> CP_REFERENCIA = 1101
             <EnumMember> <Description("MATERIAL PELIGROSO")> CP_MATERIAL_PELIGROSO = 1102
             <EnumMember> <Description("RECTIFICACION")> CP_RECTIFICACION = 1103
-            <EnumMember> <Description("TIPO DE PEDIMENTO")> CA_TIPO_PEDIMENTO = 1104
+            <EnumMember> <Description("TIPO DE PEDIMENTO")> CP_TIPO_PEDIMENTO = 1104
             <EnumMember> <Description("DESADUANAMIENTO")> CP_DESADUANAMIENTO = 1105
             <EnumMember> <Description("DESCRIPCION MERCANCIA COMPLETA")> CP_DESCRIPCION_MERCANCIA_COMPLETA = 1106
             <EnumMember> <Description("TIPO CARGA AGENCIA")> CP_TIPO_CARGA_AGENCIA = 1107

@@ -147,4 +147,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(TargetPath)" "C:\sax\projects\synapsis\dev\main\bin"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

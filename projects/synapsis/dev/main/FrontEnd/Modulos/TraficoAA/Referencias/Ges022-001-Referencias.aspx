@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/FrontEnd/Modulos/Home.Master" CodeBehind="Ges022-001-Referencias.aspx.vb" Inherits=".Ges022_001_Referencia" %>
+﻿<%@ Page Title="" Language="vb" Async="true" AutoEventWireup="false" MasterPageFile="~/FrontEnd/Modulos/Home.Master" CodeBehind="Ges022-001-Referencias.aspx.vb" Inherits=".Ges022_001_Referencia" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 </asp:Content>
@@ -76,19 +76,19 @@
                             <GWC:SwitchControl runat="server" CssClass="col-xs-12 col-md-4 p-0" ID="swcRectificacion" Label="¿Tiene rectificación?" OnText="Si" OffText="No"  Visible="false"></GWC:SwitchControl>
                         </asp:Panel>
                         
-                        <GWC:SelectControl runat="server" CssClass="bg_Asistencias col-xs-12 col-md-3 mb-5" ID="scTipoDocumento" SearchBarEnabled="true" Label="Tipo de pedimento" OnClick ="scTipoDocumento_Click" OnSelectedIndexChanged="scTipoDocumento_SelectedIndexChanged" Rules="required">
+                        <GWC:SelectControl runat="server" CssClass="bg_Asistencias col-xs-12 col-md-3 mb-5" ID="scTipoDocumento" SearchBarEnabled="true" Label="Tipo pedimento" OnClick ="scTipoDocumento_Click" OnSelectedIndexChanged="scTipoDocumento_SelectedIndexChanged" Rules="required">
                         </GWC:SelectControl>
                         <GWC:SelectControl runat="server" CssClass="bg_Asistencias col-xs-12 col-md-3 mb-5" ID="scClaveDocumento" Label="Clave pedimento" KeyField ="t_Cve_Pedimento" DisplayField ="t_ClaveDescripcion" Dimension ="Vt022ClavesPedimentoA02" Rules="required" OnClick="scClaveDocumento_Click" OnSelectedIndexChanged="scClaveDocumento_SelectedIndexChanged">
                         </GWC:SelectControl>
                         <GWC:SelectControl runat="server" CssClass="bg_Asistencias col-xs-12 col-md-3 mb-5" ID="scRegimen" Label="Régimen" KeyField="t_Cve_Regimen" DisplayField="t_DescripcionCorta" Dimension="Vt022RegimenesA16" Enabled="false" Rules="required" OnClick="scRegimen_Click" ToolTip="Sugerencia del sistema, validar por favor" ToolTipModality="Ondemand" ToolTipStatus="OkInfo">
                         </GWC:SelectControl>
-                        <GWC:SelectControl runat="server" CssClass="bg_Asistencias col-xs-12 col-md-3" ID="scTipoDespacho" Label="¿Cómo vas a despachar?" OnClick="scTipoDespacho_Click">
+                        <GWC:SelectControl runat="server" CssClass="bg_Asistencias col-xs-12 col-md-3" ID="scTipoDespacho" Label="Tipo despacho" OnClick="scTipoDespacho_Click" Rules="required">
                         </GWC:SelectControl>
                         <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md- mb-5" ID="scPrefijo" Label="Prefijo" OnSelectedIndexChanged="scPrefijo_SelectedIndexChanged" Visible ="false">
                         </GWC:SelectControl>                        
-                        <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" ID="scPatente" Label="Modalidad | Aduana | Patente" SearchBarEnabled="true" OnClick="scModalidadAduanaPatente_Click"/>                            
+                        <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" ID="scAduanaPatente" Label="Aduana despacho | Patente" SearchBarEnabled="true" OnClick="scAduanaPatente_Click" Rules="required"/>                            
                         <GWC:InputControl runat ="server" CssClass ="col-xs-12 col-md-3 mb-5" ID="icPedimentoOriginal" Label ="Pedimento original" Type ="Text" Visible="false"/>
-                        <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" ID="scTipoCarga" Label="Tipo de carga/lote" OnClick="scTipoCarga_Click">
+                        <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" ID="scTipoCarga" Label="Tipo carga/lote" OnClick="scTipoCarga_Click">
                         </GWC:SelectControl>
                         <GWC:SelectControl runat="server" CssClass="col-xs-12 col-md-3 mb-5" ID="scEjecutivoCuenta" Label="Ejecutivo de cuenta" KeyField ="i_Cve_EjecutivosMisEmpresas" DisplayField ="t_NombreCompleto" Dimension ="EjecutivosMiEmpresa">
                         </GWC:SelectControl>                                                                      
@@ -102,7 +102,7 @@
                     <ListControls>
                                       
                         <GWC:FindboxControl runat="server" CssClass ="col-xs-12 col-md-6 mb-5" ID="fbcCliente" Label ="Cliente" KeyField ="_id" DisplayField ="CA_RAZON_SOCIAL" OnTextChanged ="fbcCliente_TextChanged" OnClick ="fbcCliente_Click" Rules="required"/>
-                        <GWC:InputControl runat ="server" CssClass ="col-xs-12 col-md-6 mb-5" ID="icRFC" Label ="RFC" Type ="Text" Enabled="false"/>
+                        <GWC:InputControl runat ="server" CssClass ="col-xs-12 col-md-6 mb-5" ID="icRFC" Label ="RFC" Type ="Text" Enabled="false" Rules="required"/>
                         <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" ID="icRFCFacturacion" Label="RFC Facturación" Type="Text" Rules="maxlegth[13]" Enabled="false"/>
                         <GWC:InputControl runat="server" CssClass="col-xs-12 col-md-6 mb-5" ID="icBancoPago" Label="Banco asignado para pago" Type="Text"/> 
                                             
@@ -315,6 +315,7 @@
                     <ListControls>                        
                         <GWC:InputControl runat="server" cssclass="col-xs-12 col-md-6 mb-5" ID="icFechaEta" Label ="ETA (Estimada de arribo)" Type ="Text" Format="Calendar"/>
                         <GWC:InputControl runat="server" cssclass="col-xs-12 col-md-6 mb-5" ID="icFechaRevalidacion" Label ="Revalidación" Type ="Text" Format="Calendar"/>
+                        <GWC:InputControl runat="server" cssclass="col-xs-12 col-md-6 mb-5" ID="icFechaEntrada" Label ="Entrada" Type ="Text" Format="Calendar"/>
                         <GWC:InputControl runat="server" cssclass="col-xs-12 col-md-6 mb-5" ID="icFechaPrevio" Label ="Previo" Type ="Text" Format="Calendar"/>
 
                         
