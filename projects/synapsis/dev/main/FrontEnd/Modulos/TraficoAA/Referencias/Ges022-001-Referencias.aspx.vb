@@ -1013,49 +1013,49 @@ Public Class Ges022_001_Referencia
     Protected Sub dbcReferencia_Click(sender As Object, e As EventArgs)
 
         'Validación
-        'If OperacionGenerica.Publicado = True And OperacionGenerica.FirmaElectronica IsNot Nothing And dbcReferencia.ValueDetail = "" Then
+        If OperacionGenerica.Publicado = True And OperacionGenerica.FirmaElectronica IsNot Nothing And dbcReferencia.ValueDetail = "" Then
 
-        '    Dim controlador_ As IControladorPedimentos = New ControladorPedimentos()
+            Dim controlador_ As IControladorPedimentos = New ControladorPedimentos()
 
-        '    Dim listita_ As New List(Of ObjectId) From {
-        '    OperacionGenerica.Id
-        '    }
+            Dim listita_ As New List(Of ObjectId) From {
+            OperacionGenerica.Id
+            }
 
-        '    controlador_.CrearPedimentosAsync(listita_)
+            controlador_.CrearPedimentosAsync(listita_)
 
-        '    If controlador_.Estatus.Status = Ok Then
+            If controlador_.Estatus.Status = Ok Then
 
-        '        If controlador_.Estatus.ObjectReturned IsNot Nothing Then
+                If controlador_.Estatus.ObjectReturned IsNot Nothing Then
 
-        '            Dim pedimentos_ As List(Of DocumentoElectronico) = controlador_.Pedimentos
+                    Dim pedimentos_ As List(Of DocumentoElectronico) = controlador_.Pedimentos
 
-        '            If pedimentos_.Count = 1 Then
+                    If pedimentos_.Count = 1 Then
 
-        '                Dim pedimento_ As DocumentoElectronico = pedimentos_(0)
+                        Dim pedimento_ As DocumentoElectronico = pedimentos_(0)
 
-        '                dbcReferencia.ValueDetail = pedimento_.FolioOperacion
+                        dbcReferencia.ValueDetail = pedimento_.FolioOperacion
 
-        '                DisplayMessage("Se ha creado exitosamente su pedimento.")
+                        DisplayMessage("Se ha creado exitosamente su pedimento.")
 
-        '            Else
+                    Else
 
-        '                'No implementado
+                        'No implementado
 
-        '            End If
+                    End If
 
-        '        End If
+                End If
 
-        '    Else
+            Else
 
-        '        DisplayMessage(controlador_.Estatus.ErrorDescription)
+                DisplayMessage(controlador_.Estatus.ErrorDescription)
 
-        '    End If
+            End If
 
-        'Else
+        Else
 
-        '    DisplayMessage("No se ha publicado la referencia", StatusMessage.Fail)
+            DisplayMessage("No se ha publicado la referencia", StatusMessage.Fail)
 
-        'End If
+        End If
 
     End Sub
 

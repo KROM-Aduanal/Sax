@@ -293,7 +293,7 @@ Public Class ControladorPedimentos
                                 If secuencia_.sec > 0 Then
 
                                     'Crear número de pedimento
-                                    _pedimento.Attribute(CA_NUMERO_PEDIMENTO).Valor = Mid(_pedimento.Attribute(CP_ANIO_CURSO).Valor, 4, 1) + String.Format(CLng(secuencia_.sec), "000000")
+                                    _pedimento.Attribute(CA_NUMERO_PEDIMENTO).Valor = Mid(_pedimento.Attribute(CP_ANIO_CURSO).Valor, 4, 1) + Microsoft.VisualBasic.Format(CLng(secuencia_.sec), "000000")
 
                                     'Crear número de pedimento completo
                                     _pedimento.Attribute(CA_NUMERO_PEDIMENTO_COMPLETO).Valor = CrearNumeroPedimentoCompleto(Mid(_pedimento.Attribute(CA_ANIO_VALIDACION).Valor, 3, 2),
@@ -987,7 +987,7 @@ Public Class ControladorPedimentos
                             If secuencia_.sec > 0 Then
 
                                 'Crear número de pedimento
-                                _pedimento.Attribute(CA_NUMERO_PEDIMENTO).Valor = Mid(_pedimento.Attribute(CP_ANIO_CURSO).Valor, 4, 1) + String.Format(CLng(secuencia_.sec), "000000")
+                                _pedimento.Attribute(CA_NUMERO_PEDIMENTO).Valor = Mid(_pedimento.Attribute(CP_ANIO_CURSO).Valor, 4, 1) + Microsoft.VisualBasic.Format(CLng(secuencia_.sec), "000000")
 
                                 'Crear número de pedimento completo
                                 _pedimento.Attribute(CA_NUMERO_PEDIMENTO_COMPLETO).Valor = CrearNumeroPedimentoCompleto(Mid(_pedimento.Attribute(CA_ANIO_VALIDACION).Valor, 3, 2),
