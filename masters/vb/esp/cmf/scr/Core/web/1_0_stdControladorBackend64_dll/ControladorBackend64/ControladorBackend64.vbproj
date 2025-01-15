@@ -211,6 +211,11 @@
       <HintPath>..\..\..\..\..\..\sax2.0\bin\Core\cmf\Sax.SaxStatements64.0.0.0.0.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Sax.Web.ControladorBackend64.0.0.0.0, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\sax2.0\bin\Core\web\Sax.Web.ControladorBackend64.0.0.0.0.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="SingletonSQLServer64">
       <HintPath>..\..\..\..\..\..\sax2.0\bin\Core\data\SingletonSQLServer64.dll</HintPath>
       <Private>False</Private>
@@ -221,6 +226,10 @@
     </Reference>
     <Reference Include="Syn.Documento.Componentes.CampoGenerico64.0.0.0.0">
       <HintPath>..\..\..\..\..\..\sax2.0\bin\Core\syn\Syn.Documento.Componentes.CampoGenerico64.0.0.0.0.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Syn.Documento.Componentes.ConfiguracionNodo64.0.0.0.0">
+      <HintPath>..\..\..\..\..\..\sax2.0\bin\Core\syn\Syn.Documento.Componentes.ConfiguracionNodo64.0.0.0.0.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Syn.Documento.Componentes.Nodo64.0.0.0.0">
@@ -340,4 +349,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(TargetPath)" "C:\sax\projects\synapsis\dev\main\bin"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

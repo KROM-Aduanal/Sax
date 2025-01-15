@@ -59,22 +59,31 @@ Partial Public Class Ges022_001_MetaforaPedimento
     Protected WithEvents dbcReferenciaPedimento As Global.Gsol.Web.Components.DualityBarControl
 
     '''<summary>
-    '''Control scTipoReferencia.
+    '''Control swcTipoOperacion.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents scTipoReferencia As Global.Gsol.Web.Components.SelectControl
+    Protected WithEvents swcTipoOperacion As Global.Gsol.Web.Components.SwitchControl
 
     '''<summary>
-    '''Control scPrefijoReferencia.
+    '''Control icPesoBruto.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents scPrefijoReferencia As Global.Gsol.Web.Components.SelectControl
+    Protected WithEvents icPesoBruto As Global.Gsol.Web.Components.InputControl
+
+    '''<summary>
+    '''Control icTipoCambio.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents icTipoCambio As Global.Gsol.Web.Components.InputControl
 
     '''<summary>
     '''Control scPatente.
@@ -84,24 +93,6 @@ Partial Public Class Ges022_001_MetaforaPedimento
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents scPatente As Global.Gsol.Web.Components.SelectControl
-
-    '''<summary>
-    '''Control scEjecutivoCuenta.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents scEjecutivoCuenta As Global.Gsol.Web.Components.SelectControl
-
-    '''<summary>
-    '''Control swcTipoOperacion.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents swcTipoOperacion As Global.Gsol.Web.Components.SwitchControl
 
     '''<summary>
     '''Control scClavePedimento.
@@ -131,22 +122,13 @@ Partial Public Class Ges022_001_MetaforaPedimento
     Protected WithEvents scDestinoMercancia As Global.Gsol.Web.Components.SelectControl
 
     '''<summary>
-    '''Control icTipoCambio.
+    '''Control scEjecutivoCuenta.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents icTipoCambio As Global.Gsol.Web.Components.InputControl
-
-    '''<summary>
-    '''Control icPesoBruto.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents icPesoBruto As Global.Gsol.Web.Components.InputControl
+    Protected WithEvents scEjecutivoCuenta As Global.Gsol.Web.Components.SelectControl
 
     '''<summary>
     '''Control scAduanaEntradaSalida.
@@ -212,13 +194,22 @@ Partial Public Class Ges022_001_MetaforaPedimento
     Protected WithEvents icPrecioPagado As Global.Gsol.Web.Components.InputControl
 
     '''<summary>
-    '''Control fscDatosImportador.
+    '''Control icMarcasNumeros.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents fscDatosImportador As Global.Gsol.Web.Components.FieldsetControl
+    Protected WithEvents icMarcasNumeros As Global.Gsol.Web.Components.InputControl
+
+    '''<summary>
+    '''Control fscDatosIOE.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents fscDatosIOE As Global.Gsol.Web.Components.FieldsetControl
 
     '''<summary>
     '''Control fbcCliente.
@@ -239,15 +230,6 @@ Partial Public Class Ges022_001_MetaforaPedimento
     Protected WithEvents icRFCCliente As Global.Gsol.Web.Components.InputControl
 
     '''<summary>
-    '''Control icCURP.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents icCURP As Global.Gsol.Web.Components.InputControl
-
-    '''<summary>
     '''Control icRFCFacturacion.
     '''</summary>
     '''<remarks>
@@ -255,6 +237,15 @@ Partial Public Class Ges022_001_MetaforaPedimento
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents icRFCFacturacion As Global.Gsol.Web.Components.InputControl
+
+    '''<summary>
+    '''Control icCURP.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents icCURP As Global.Gsol.Web.Components.InputControl
 
     '''<summary>
     '''Control icDomicilioCliente.
@@ -446,15 +437,6 @@ Partial Public Class Ges022_001_MetaforaPedimento
     Protected WithEvents scValidacionAduanaDespacho As Global.Gsol.Web.Components.SelectControl
 
     '''<summary>
-    '''Control icMarcasNumeros.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents icMarcasNumeros As Global.Gsol.Web.Components.InputControl
-
-    '''<summary>
     '''Control icCertificacion.
     '''</summary>
     '''<remarks>
@@ -473,13 +455,13 @@ Partial Public Class Ges022_001_MetaforaPedimento
     Protected WithEvents icFechaValidacion As Global.Gsol.Web.Components.InputControl
 
     '''<summary>
-    '''Control Fechas.
+    '''Control fscFechas.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents Fechas As Global.Gsol.Web.Components.FieldsetControl
+    Protected WithEvents fscFechas As Global.Gsol.Web.Components.FieldsetControl
 
     '''<summary>
     '''Control icFechaRegistro.
@@ -489,6 +471,24 @@ Partial Public Class Ges022_001_MetaforaPedimento
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents icFechaRegistro As Global.Gsol.Web.Components.InputControl
+
+    '''<summary>
+    '''Control icFechaPresentacion.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents icFechaPresentacion As Global.Gsol.Web.Components.InputControl
+
+    '''<summary>
+    '''Control icFechaEntrada.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents icFechaEntrada As Global.Gsol.Web.Components.InputControl
 
     '''<summary>
     '''Control icFechaRevalidacion.
@@ -536,15 +536,6 @@ Partial Public Class Ges022_001_MetaforaPedimento
     Protected WithEvents icFechaPago As Global.Gsol.Web.Components.InputControl
 
     '''<summary>
-    '''Control icFechaAtraque.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents icFechaAtraque As Global.Gsol.Web.Components.InputControl
-
-    '''<summary>
     '''Control icFechaDespacho.
     '''</summary>
     '''<remarks>
@@ -552,6 +543,15 @@ Partial Public Class Ges022_001_MetaforaPedimento
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents icFechaDespacho As Global.Gsol.Web.Components.InputControl
+
+    '''<summary>
+    '''Control icFechaAtraque.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents icFechaAtraque As Global.Gsol.Web.Components.InputControl
 
     '''<summary>
     '''Control icFechaEstimadaArribo.
@@ -572,22 +572,13 @@ Partial Public Class Ges022_001_MetaforaPedimento
     Protected WithEvents icFechaEntrega As Global.Gsol.Web.Components.InputControl
 
     '''<summary>
-    '''Control icFechaEntrada.
+    '''Control icFechaExtraccion.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents icFechaEntrada As Global.Gsol.Web.Components.InputControl
-
-    '''<summary>
-    '''Control icFechaPresentacion.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents icFechaPresentacion As Global.Gsol.Web.Components.InputControl
+    Protected WithEvents icFechaExtraccion As Global.Gsol.Web.Components.InputControl
 
     '''<summary>
     '''Control icFechaFacturacion.
@@ -597,6 +588,24 @@ Partial Public Class Ges022_001_MetaforaPedimento
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents icFechaFacturacion As Global.Gsol.Web.Components.InputControl
+
+    '''<summary>
+    '''Control icFechaIMPEUACAN.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents icFechaIMPEUACAN As Global.Gsol.Web.Components.InputControl
+
+    '''<summary>
+    '''Control icFechaOriginal.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents icFechaOriginal As Global.Gsol.Web.Components.InputControl
 
     '''<summary>
     '''Control fscTasasContribuciones.
@@ -725,13 +734,13 @@ Partial Public Class Ges022_001_MetaforaPedimento
     Protected WithEvents icCuadroLiquidacionTotal As Global.Gsol.Web.Components.InputControl
 
     '''<summary>
-    '''Control fscCetificacion.
+    '''Control fscCertificacion.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents fscCetificacion As Global.Gsol.Web.Components.FieldsetControl
+    Protected WithEvents fscCertificacion As Global.Gsol.Web.Components.FieldsetControl
 
     '''<summary>
     '''Control fscLineaCaptura.
@@ -842,13 +851,13 @@ Partial Public Class Ges022_001_MetaforaPedimento
     Protected WithEvents icLineaCapturaRecepcion As Global.Gsol.Web.Components.InputControl
 
     '''<summary>
-    '''Control fscDatosProveedoresImpo.
+    '''Control fscDatosPOC.
     '''</summary>
     '''<remarks>
     '''Campo generado automáticamente.
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
-    Protected WithEvents fscDatosProveedoresImpo As Global.Gsol.Web.Components.FieldsetControl
+    Protected WithEvents fscDatosPOC As Global.Gsol.Web.Components.FieldsetControl
 
     '''<summary>
     '''Control pbcProveedores.
@@ -876,6 +885,15 @@ Partial Public Class Ges022_001_MetaforaPedimento
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents icIdFiscalProveedor As Global.Gsol.Web.Components.InputControl
+
+    '''<summary>
+    '''Control scVinculacion.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents scVinculacion As Global.Gsol.Web.Components.SelectControl
 
     '''<summary>
     '''Control icDocimilioProveedor.
@@ -948,6 +966,42 @@ Partial Public Class Ges022_001_MetaforaPedimento
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents icMontoFacturaUSDProveedor As Global.Gsol.Web.Components.InputControl
+
+    '''<summary>
+    '''Control ccAcuseValor.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ccAcuseValor As Global.Gsol.Web.Components.CatalogControl
+
+    '''<summary>
+    '''Control scAcuseValor.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents scAcuseValor As Global.Gsol.Web.Components.SelectControl
+
+    '''<summary>
+    '''Control swcVinculacion.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents swcVinculacion As Global.Gsol.Web.Components.SwitchControl
+
+    '''<summary>
+    '''Control scINCOTERM.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents scINCOTERM As Global.Gsol.Web.Components.SelectControl
 
     '''<summary>
     '''Control fscDestinatarios.
@@ -1058,51 +1112,6 @@ Partial Public Class Ges022_001_MetaforaPedimento
     Protected WithEvents icTransportistaDomicilio As Global.Gsol.Web.Components.InputControl
 
     '''<summary>
-    '''Control fsDatosCandados.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents fsDatosCandados As Global.Gsol.Web.Components.FieldsetControl
-
-    '''<summary>
-    '''Control ccCandados.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents ccCandados As Global.Gsol.Web.Components.CatalogControl
-
-    '''<summary>
-    '''Control icNumeroCandado.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents icNumeroCandado As Global.Gsol.Web.Components.InputControl
-
-    '''<summary>
-    '''Control icCandadoPrimeraRevisión.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents icCandadoPrimeraRevisión As Global.Gsol.Web.Components.InputControl
-
-    '''<summary>
-    '''Control icCandadoSegundaRevision.
-    '''</summary>
-    '''<remarks>
-    '''Campo generado automáticamente.
-    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-    '''</remarks>
-    Protected WithEvents icCandadoSegundaRevision As Global.Gsol.Web.Components.InputControl
-
-    '''<summary>
     '''Control fscGuias.
     '''</summary>
     '''<remarks>
@@ -1173,6 +1182,51 @@ Partial Public Class Ges022_001_MetaforaPedimento
     '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
     '''</remarks>
     Protected WithEvents scTipoContenedor As Global.Gsol.Web.Components.SelectControl
+
+    '''<summary>
+    '''Control fsDatosCandados.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents fsDatosCandados As Global.Gsol.Web.Components.FieldsetControl
+
+    '''<summary>
+    '''Control ccCandados.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents ccCandados As Global.Gsol.Web.Components.CatalogControl
+
+    '''<summary>
+    '''Control icNumeroCandado.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents icNumeroCandado As Global.Gsol.Web.Components.InputControl
+
+    '''<summary>
+    '''Control icCandadoPrimeraRevisión.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents icCandadoPrimeraRevisión As Global.Gsol.Web.Components.InputControl
+
+    '''<summary>
+    '''Control icCandadoSegundaRevision.
+    '''</summary>
+    '''<remarks>
+    '''Campo generado automáticamente.
+    '''Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+    '''</remarks>
+    Protected WithEvents icCandadoSegundaRevision As Global.Gsol.Web.Components.InputControl
 
     '''<summary>
     '''Control fscIdentificadores.

@@ -187,13 +187,15 @@ Namespace Syn.Documento
                                             Item(CamposPedimento.CP_MODALIDAD_ADUANA_PATENTE, Entero, longitud_:=3),
                                             Item(CamposPedimento.CA_ADUANA_ENTRADA_SALIDA, Texto, longitud_:=3),
                                             Item(CamposPedimento.CA_PATENTE, Texto, longitud_:=4),
-                                            Item(CamposReferencia.CA_TIPO_PEDIMENTO, Texto, longitud_:=100),
+                                            Item(CamposReferencia.CP_TIPO_PEDIMENTO, Texto, longitud_:=100),
                                             Item(CamposReferencia.CP_DESADUANAMIENTO, Entero, longitud_:=5),
                                             Item(CamposPedimento.CP_EJECUTIVO_CUENTA, Entero, longitud_:=5),
                                             Item(CamposReferencia.CP_DESCRIPCION_MERCANCIA_COMPLETA, Texto, longitud_:=150),
                                             Item(CamposReferencia.CP_TIPO_CARGA_AGENCIA, Entero, longitud_:=3),
                                             Item(CamposReferencia.CP_TIPO_DESPACHO, Entero, longitud_:=3),
-                                            Item(CamposReferencia.CP_PEDIMENTO_ORIGINAL, Texto, longitud_:=21)
+                                            Item(CamposReferencia.CP_PEDIMENTO_ORIGINAL, Texto, longitud_:=21),
+                                            Item(CamposPedimento.CP_MODALIDAD, Entero, longitud_:=2),
+                                            Item(CamposPedimento.CA_CLAVE_SAD, Texto, longitud_:=3)
                             }
 
                     'Cliente'
@@ -201,10 +203,11 @@ Namespace Syn.Documento
 
                     Return New List(Of Nodo) From {
                                              Item(CamposClientes.CP_OBJECTID_CLIENTE, IdObject),
-                                             Item(CamposClientes.CA_RAZON_SOCIAL, Texto, longitud_:=120, useAsMetadata_:=True),
+                                             Item(CamposClientes.CA_RAZON_SOCIAL, Texto, longitud_:=120, 0, useAsMetadata_:=True),
                                              Item(CamposClientes.CA_RFC_CLIENTE, Texto, longitud_:=13),
                                              Item(CamposClientes.CP_RFC_FACTURACION, Texto, longitud_:=13),
-                                             Item(CamposClientes.CP_CVE_BANCO, Texto, longitud_:=200)
+                                             Item(CamposClientes.CP_CVE_BANCO, Texto, longitud_:=200),
+                                             Item(CamposClientes.CP_CVE_CLIENTE, Entero)
                               }
 
                     'Tracking'
@@ -212,7 +215,6 @@ Namespace Syn.Documento
 
                     Return New List(Of Nodo) From {
                                              Item(CamposReferencia.CP_FECHA_APERTURA, Fecha),
-                                             Item(CamposPedimento.CA_FECHA_ENTRADA, Fecha),
                                              Item(CamposReferencia.CP_FECHA_PROFORMA, Fecha),
                                              Item(CamposReferencia.CP_FECHA_CIERRE, Fecha),
                                              Item(CamposReferencia.CP_FECHA_PAGO, Fecha),
@@ -225,6 +227,7 @@ Namespace Syn.Documento
 
                     Return New List(Of Nodo) From {
                                             Item(CamposReferencia.CP_FECHA_PRESENTACION, Fecha),
+                                            Item(CamposPedimento.CA_FECHA_ENTRADA, Fecha),
                                             Item(CamposReferencia.CP_FECHA_SALIDA, Fecha),
                                             Item(CamposReferencia.CP_FECHA_PREVIO, Fecha),
                                             Item(CamposReferencia.CP_FECHA_ETD, Fecha),

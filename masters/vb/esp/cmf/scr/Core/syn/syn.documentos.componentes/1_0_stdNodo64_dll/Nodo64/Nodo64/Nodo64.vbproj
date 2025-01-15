@@ -65,6 +65,11 @@
       <HintPath>..\..\..\..\..\..\SVN QA\Aplicacion\synapsis\Syn.Documento.Componentes.Campo64.0.0.0.0.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Syn.Documento.Componentes.ConfiguracionNodo64.0.0.0.0, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\sax2.0\bin\Core\syn\Syn.Documento.Componentes.ConfiguracionNodo64.0.0.0.0.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Syn.Documento.Componentes.DecoradorCampo64.0.0.0.0, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\SVN QA\Aplicacion\synapsis\Syn.Documento.Componentes.DecoradorCampo64.0.0.0.0.dll</HintPath>
@@ -194,4 +199,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(TargetPath)" "C:\sax\projects\synapsis\dev\main\bin"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -33,15 +33,25 @@ Namespace Syn.Documento
 
             _idPermisoConsulta = Nothing
 
-            _publicado = False
-
-            '_seccionesActivas = New List(Of Seccion)
+            _Publicado = False
 
             _Borrador = New Borrador
 
-            _borrador.Folder.ArchivoPrincipal.Dupla.Fuente = documentoElectronico_
+            _Borrador.Folder.ArchivoPrincipal.Dupla.Fuente = documentoElectronico_
 
-            _Borrador.Folder.DocumentosAsociados = New List(Of DocumentoAsociado)
+            If documentoElectronico_.DocumentosAsociados IsNot Nothing Then
+
+                If documentoElectronico_.DocumentosAsociados.Count > 0 Then
+
+                    _Borrador.Folder.DocumentosAsociados = documentoElectronico_.DocumentosAsociados
+
+                Else
+
+                    _Borrador.Folder.DocumentosAsociados = New List(Of DocumentoAsociado)
+
+                End If
+
+            End If
 
             _Publicaciones = New Publicaciones
 
