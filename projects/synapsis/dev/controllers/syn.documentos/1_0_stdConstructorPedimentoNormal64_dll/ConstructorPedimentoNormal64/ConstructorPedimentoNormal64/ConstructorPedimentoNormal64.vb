@@ -383,7 +383,8 @@ Namespace Syn.Documento
                                    Item(CP_TIPO_PEDIMENTO, Entero, longitud_:=2),
                                    Item(CP_RUTA_VALIDACION, Entero, longitud_:=2),
                                    Item(CP_TIPO_DESPACHO, Entero, longitud_:=2),
-                                   Item(CP_ANIO_CURSO, Texto, longitud_:=4)
+                                   Item(CP_ANIO_CURSO, Texto, longitud_:=4),
+                                   Item(CP_TIPO_CAMBIO_EXTRACCION, Real, cantidadEnteros_:=4, cantidadDecimales_:=5)
                                    }
 
                 ' Encabezado para páginas secundarias del pedimento
@@ -427,7 +428,7 @@ Namespace Syn.Documento
                                Item(CP_MONEDA_OTROS_INCREMENTABLES, Texto, longitud_:=3),
                                Item(CP_FACTOR_OTROS_INCREMENTABLES, Real, cantidadEnteros_:=2, cantidadDecimales_:=5),
                                Item(CA_TRANSPORTE_DECREMENTABLES, Entero, longitud_:=12),
-                               Item(CP_MONEDA_TRASNPORTE, Texto, longitud_:=3),
+                               Item(CP_MONEDA_TRANSPORTE, Texto, longitud_:=3),
                                Item(CP_FACTOR_TRANSPORTE, Real, cantidadEnteros_:=2, cantidadDecimales_:=5),
                                Item(CA_SEGURO_DECREMENTABLES, Entero, longitud_:=12),
                                Item(CP_MONEDA_SEGUROS_DECREMENTABLES, Texto, longitud_:=3),
@@ -441,6 +442,15 @@ Namespace Syn.Documento
                                Item(CA_OTROS_DECREMENTABLES, Entero, longitud_:=12),
                                Item(CP_MONEDA_OTROS_DECREMENTABLES, Texto, longitud_:=3),
                                Item(CP_FACTOR_OTROS_DECREMENTABLES, Real, cantidadEnteros_:=2, cantidadDecimales_:=5),
+                               Item(CP_MONTO_ORIGINAL_SEGUROS_DECREMENTABLES, Real, cantidadEnteros_:=15, cantidadDecimales_:=5),
+                               Item(CP_MONTO_ORIGINAL_OTROS_DECREMENTABLES, Real, cantidadEnteros_:=15, cantidadDecimales_:=5),
+                               Item(CP_MONTO_ORIGINAL_CARGA, Real, cantidadEnteros_:=15, cantidadDecimales_:=5),
+                               Item(CP_MONTO_ORIGINAL_DESCARGA, Real, cantidadEnteros_:=15, cantidadDecimales_:=5),
+                               Item(CP_MONTO_ORIGINAL_FLETES, Real, cantidadEnteros_:=15, cantidadDecimales_:=5),
+                               Item(CP_MONTO_ORIGINAL_EMBALAJES, Real, cantidadEnteros_:=15, cantidadDecimales_:=5),
+                               Item(CP_MONTO_ORIGINAL_OTROS_INCREMENTABLES, Real, cantidadEnteros_:=15, cantidadDecimales_:=5),
+                               Item(CP_MONTO_ORIGINAL_TRANSPORTE, Real, cantidadEnteros_:=15, cantidadDecimales_:=5),
+                               Item(CP_MONTO_ORIGINAL_SEGUROS_INCREMENTABLES, Real, cantidadEnteros_:=15, cantidadDecimales_:=5),
                                Item(CA_CVE_TIPO_OPERACION, Entero, longitud_:=1)
                          }
 
@@ -742,6 +752,11 @@ Namespace Syn.Documento
                                Item(CA_ENTIDAD_FEDERATIVA_VENDEDOR, Texto, longitud_:=3),
                                Item(CP_VALOR_FACTURA_PARTIDA, Texto, longitud_:=3),
                                Item(CP_PRECIO_REFERENCIA_PARTIDA_DOF, Texto, longitud_:=3),
+                               Item(CP_COMPENSACION_PEDIMENTO_ORIGINAL_PARTIDA, Texto, longitud_:=21),
+                               Item(CP_ANIO_VEHICULO_ISAN, Texto, longitud_:=4),
+                               Item(CP_VALOR_AGREGADO_MONEDA_ORIGINAL_PARTIDA, Texto, longitud_:=3),
+                               Item(CP_VALOR_AGREGADO_FACTOR_CONVERSION_PARTIDA, Real, cantidadEnteros_:=2, cantidadDecimales_:=5),
+                               Item(CP_VALOR_AGREGADO_MONTO_ORIGINAL_PARTIDA, Real, cantidadEnteros_:=15, cantidadDecimales_:=5),
                                Item(CamposGlobales.CP_IDENTITY, Entero),
                                Item(ANS25, True),
                                Item(ANS26, True),
